@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>TiltingMaze</title>
+</head>
+
+<body>
+  <canvas id="myCanvas" width="500" height="500" style="border:solid 1px blue">
+    Your browser does not support HTML5 Canvas.
+  </canvas>
+  <script>
+    let canvas = document.querySelector('#myCanvas');
+    let ctx = canvas.getContext("2d");
+
+    const W = canvas.width, H = canvas.height;
+
+    //CIRCLE: initialize a circle with properties and methods
+    let circle = {
+      R: 20, 		        // radius
+      COLOR: "orange", 	// color
+      x: W / 2,	        // (initial) X position (Canvas middle)
+      y: 20, 	          // (initial) Y position (Canvas top)
+      A: 0.1, 	        // acceleration (gravity = 0.1 pixels per frame, down in the Y-axis)
+      dY: 0, 		        // (initial) Y displacement (vertical velocity or displacement)
+
+      draw() {
+        ctx.fillStyle = this.COLOR;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.R, 0, 2 * Math.PI);
+        ctx.fill();
+      },
+
+      update() {
+        // if circle has not reached the bottom of the Canvas
+        if (this.y < H - this.R) {
+          this.dY += this.A; // increase circle velocity in Y
+          this.y += this.dY; // update circle position
+        }
+        else {
+          // adjust circle position, so that it lies perfectly over the Canvas bottom
+          this.y = H - this.R;
+        }
+      }
+    };
+
+    // ANIMATION FUNCTION
+    function render() {
+      // clear Canvas
+      ctx.clearRect(0, 0, W, H);
+
+      // draw a circle
+      circle.draw();
+
+      // move the circle
+      circle.update();
+
+      window.requestAnimationFrame(render)
+    }
+
+    // START THE ANIMATION
+    window.onload = render; 
+
+  </script>
+</body>
+
+</html>
