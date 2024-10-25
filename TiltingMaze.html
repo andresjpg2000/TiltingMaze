@@ -16,12 +16,16 @@
 
     const W = canvas.width, H = canvas.height;
 
+    const squareSize = 200;
+
+    let angle = 0;
+
     //CIRCLE: initialize a circle with properties and methods
     let circle = {
       R: 20, 		        // radius
       COLOR: "orange", 	// color
       x: W / 2,	        // (initial) X position (Canvas middle)
-      y: 20, 	          // (initial) Y position (Canvas top)
+      y: H / 2, 	          // (initial) Y position (Canvas top)
       A: 0.1, 	        // acceleration (gravity = 0.1 pixels per frame, down in the Y-axis)
       dY: 0, 		        // (initial) Y displacement (vertical velocity or displacement)
 
@@ -45,11 +49,26 @@
       }
     };
 
+    function Square() {
+
+        ctx.save();
+        ctx.translate(W / 2, H / 2);
+        ctx.rotate(angle);
+        ctx.strokeStyle = "blue";
+        ctx.lineWidth = 3;
+        ctx.strokeRect(-squareSize / 2, -squareSize / 2 , squareSize, squareSize);
+        ctx.restore();
+
+    }
+
     // ANIMATION FUNCTION
     function render() {
       // clear Canvas
       ctx.clearRect(0, 0, W, H);
 
+      // draw square
+      Square();
+      
       // draw a circle
       circle.draw();
 
@@ -59,6 +78,11 @@
       window.requestAnimationFrame(render)
     }
 
+    // Rotate square
+    canvas.addEventListener("mousemove", (event) => {
+        angle = (event.clientX / W) * Math.PI * 2;
+    })
+    
     // START THE ANIMATION
     window.onload = render; 
 
