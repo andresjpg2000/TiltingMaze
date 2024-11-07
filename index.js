@@ -195,3 +195,5 @@ class Cell{
 let maze = new Maze(500, 10, 10)
 maze.setup()
 maze.draw()
+console.log(maze.grid);
+

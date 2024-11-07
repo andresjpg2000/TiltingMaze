@@ -5,5 +5,20 @@ body{
     justify-content: center;
     height: 100vh;
     overflow: hidden;
-  }
+}
+
+h1{
+  color: azure;
+}
+
+.options{
+  position: relative;
+  margin-left: 4rem;
+}
+
+label{
+  display: block;
+  color: azure;
+  width: 100px;
+}
   

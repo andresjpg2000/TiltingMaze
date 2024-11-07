@@ -8,6 +8,26 @@
 </head>
 <body>
     <canvas id="myCanvas"></canvas>
+
+    <div class="options">
+        <h1>Propriedades da bola</h1>
+        <label for="gravity">Gravidade</label>
+        <input type="number" id="gravity" min="1" max="10" placeholder="1">
+        <br>
+        <label for="friction">Atrito</label>
+        <input type="number" id="friction" min="1" max="10" placeholder="1">
+
+        <h1>Propriedades do labirinto</h1>
+        <label for="#rows">Linhas</label>
+        <input type="number" id="rows" min="5" max="20" placeholder="1">
+        <br>
+        <label for="columns">Colunas</label>
+        <input type="number" id="columns" min="5" max="20" placeholder="1">
+
+    </div>
+
+
+
     <script src="index.js"></script>
 </body>
 </html>
