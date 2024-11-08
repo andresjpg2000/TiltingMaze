@@ -1,6 +1,7 @@
 const canvas = document.querySelector("#myCanvas");
 let c = canvas.getContext("2d");
 let current;
+let angle;
 
 class Maze{
     constructor(size,rows,columns) {
@@ -28,13 +29,21 @@ class Maze{
         canvas.height = this.size
         canvas.style.background = "black"
     
+        // Save the current canvas state
+        c.save();
+        
+        // Translate to the center of the canvas, rotate, then translate back
+        c.translate(this.size / 2, this.size / 2);
+        c.rotate(angle);  // Apply rotation based on the current angle
+        c.translate(-this.size / 2, -this.size / 2);
+        
         this.grid.forEach((row) => {
           row.forEach((cell) => {
             cell.show() // This method will draw otu the walls of the cell
           })
         })
     
-        this.DFSMaze() // We will implement this in a minute
+        this.DFSMaze() 
     
         requestAnimationFrame(() => {
           this.draw()
@@ -43,7 +52,7 @@ class Maze{
 
     DFSMaze() {
         current.visited = true
-        let next = current.getRandNeighbour() // We'll also define this in a minute
+        let next = current.getRandNeighbour()
         
         if (next) {
             next.visited = true
@@ -193,9 +202,28 @@ class Cell{
     }
 
 }
+
+function rotatePoint(px, py, ox, oy, angle) {
+  const cos = Math.cos(angle);
+  const sin = Math.sin(angle);
+  const dx = px - ox;
+  const dy = py - oy;
   
+  return {
+    x: ox + dx * cos - dy * sin,
+    y: oy + dx * sin + dy * cos
+  };
+}
+
+// Update angle based on mouse position
+canvas.addEventListener("mousemove", (event) => {
+  angle = (event.clientX / maze.size) * Math.PI * 2;
+  console.log(angle);
+});
+
 let maze = new Maze(500, 10, 10)
 maze.setup()
 maze.draw()
+
 console.log(maze.grid);
 
