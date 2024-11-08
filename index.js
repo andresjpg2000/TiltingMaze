@@ -85,6 +85,8 @@ class Cell{
       this.visited = false
       this.neighbours = []
       this.color = "black"
+      this.x = colNum * this.size
+      this.y = rowNum * this.size
     }
   
     setNeighbours() {
