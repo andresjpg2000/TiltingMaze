@@ -1,7 +1,8 @@
 const canvas = document.querySelector("#myCanvas");
 let c = canvas.getContext("2d");
 let current;
-let angle;
+let angle; // initial angle of rotation
+let margin = 300;
 
 class Maze{
     constructor(size,rows,columns) {
@@ -25,15 +26,18 @@ class Maze{
     }
 
     draw() {
-        canvas.width = this.size
-        canvas.height = this.size
+        canvas.width = this.size + margin
+        canvas.height = this.size + margin
         canvas.style.background = "black"
+
+        let offsetX = (canvas.width - this.size) / 2;
+        let offsetY = (canvas.height - this.size) / 2;
     
         // Save the current canvas state
         c.save();
         
         // Translate to the center of the canvas, rotate, then translate back
-        c.translate(this.size / 2, this.size / 2);
+        c.translate(offsetX + this.size / 2, offsetY + this.size / 2);
         c.rotate(angle);  // Apply rotation based on the current angle
         c.translate(-this.size / 2, -this.size / 2);
         
@@ -43,11 +47,10 @@ class Maze{
           })
         })
     
+        c.restore()
+        
         this.DFSMaze() 
     
-        requestAnimationFrame(() => {
-          this.draw()
-        })
     }
 
     DFSMaze() {
@@ -192,7 +195,7 @@ class Cell{
 
     highlight() {
         c.fillStyle = "red"
-        c.fillRect((this.colNum * this.size) + 1, (this.rowNum * this.size) + 1, this.size - 2, this.size - 2)
+        c.fillRect((this.colNum * this.size) + 1 + margin/2, (this.rowNum * this.size) + 1 + margin/2, this.size - 2, this.size - 2)
     }
 
     show() {
@@ -215,15 +218,75 @@ function rotatePoint(px, py, ox, oy, angle) {
   };
 }
 
-// Update angle based on mouse position
-canvas.addEventListener("mousemove", (event) => {
-  angle = (event.clientX / maze.size) * Math.PI * 2;
-  console.log(angle);
-});
-
 let maze = new Maze(500, 10, 10)
 maze.setup()
 maze.draw()
 
-console.log(maze.grid);
+let centerX = maze.size / 2 + margin / 2;
+let centerY = maze.size / 2 + margin / 2;
+
+// Ball properties
+let ball = {
+  radius: 15,
+  color: "orange",
+  x: margin/2 + 15,      // initial x position
+  y: margin/2 + 15, // initial y position
+  dx: 0,           // x velocity
+  dy: 0,           // y velocity
+  gravity: 0.1,    // gravity affecting the ball
+  friction: 0.4,  // friction factor on each bounce to slow it down over time
+
+  draw() {
+    c.fillStyle = this.color;
+    c.beginPath();
+    c.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    c.fill();
+  },
+
+  update() {
+    // Apply gravity
+    this.dy += this.gravity;
+
+    // Calculate rotated position for collision
+    let rotatedPos = rotatePoint(this.x, this.y, centerX, centerY, -angle);
+
+    // Collision detection and response in rotated space
+  
+    
+
+    // Rotate back adjusted position
+    let adjustedPos = rotatePoint(rotatedPos.x, rotatedPos.y, centerX, centerY, angle);
+    this.x = adjustedPos.x;
+    this.y = adjustedPos.y;
+
+    // Update ball's position with velocities
+    this.x += this.dx;
+    this.y += this.dy;
+  }
+};
+
+function render() {
+  
+  // Clear canvas
+  c.clearRect(0, 0, c.width, c.height);
+
+  maze.draw()
+
+  ball.draw()
+
+  // ball.update()
+
+  requestAnimationFrame(render);
+
+}
+
+// Update angle based on mouse position
+canvas.addEventListener("mousemove", (event) => {
+  angle = (event.clientX / maze.size) * Math.PI * 2;
+  // console.log(angle);
+});
+
+render()
+
+console.log(maze.grid)
 
