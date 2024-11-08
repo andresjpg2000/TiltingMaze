@@ -250,6 +250,19 @@ let ball = {
     c.fill();
   },
 
+  currentCell() {
+    // returns the cell where the ball is currently at
+    let adjustedX = this.x - margin / 2; // remove margin in order to compare the ball position with the cell position.
+    let adjustedY = this.y - margin / 2;
+    
+    
+    let currentCol = Math.floor( adjustedX / maze.grid[0][0].size)
+    let currentRow = Math.floor( adjustedY / maze.grid[0][0].size)
+
+    return (maze.grid[currentCol][currentRow]);
+
+  },
+
   update() {
     // Apply gravity
     this.dy += this.gravity;
@@ -290,4 +303,5 @@ function render() {
 render()
 
 console.log(maze.grid)
+console.log(ball.currentCell())
 
