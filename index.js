@@ -2,7 +2,7 @@ const canvas = document.querySelector("#myCanvas");
 let c = canvas.getContext("2d");
 let current;
 let angle; // initial angle of rotation
-let margin = 300;
+let margin = 200;
 
 class Maze{
     constructor(size,rows,columns) {
@@ -43,7 +43,7 @@ class Maze{
         
         this.grid.forEach((row) => {
           row.forEach((cell) => {
-            cell.show() // This method will draw otu the walls of the cell
+            cell.show() // This method will draw the walls of the cell
           })
         })
     
@@ -72,7 +72,14 @@ class Maze{
         }
 
         if (this.stack.length == 0) {
-            return
+            
+          // Update angle based on mouse position. Only after the maze generation animation has ended.
+          canvas.addEventListener("mousemove", (event) => {
+            angle = (event.clientX / maze.size) * Math.PI * 2;
+            // console.log(angle);
+          });
+
+          return
         }
     }
 
@@ -201,7 +208,7 @@ class Cell{
     show() {
         this.drawWalls()
         c.fillStyle = this.color
-        c.fillRect((this.colNum * this.size)+1,(this.rowNum*this.size)+1,this.size - 2,this.size - 2)
+        c.fillRect((this.colNum * this.size) + 1,(this.rowNum*this.size) + 1,this.size - 2,this.size - 2)
     }
 
 }
@@ -279,12 +286,6 @@ function render() {
   requestAnimationFrame(render);
 
 }
-
-// Update angle based on mouse position
-canvas.addEventListener("mousemove", (event) => {
-  angle = (event.clientX / maze.size) * Math.PI * 2;
-  // console.log(angle);
-});
 
 render()
 
