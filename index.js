@@ -208,126 +208,174 @@ class Cell{
 
 }
 
-// function rotatePoint(px, py, ox, oy, angle) {
-//   const cos = Math.cos(angle);
-//   const sin = Math.sin(angle);
-//   const dx = px - ox;
-//   const dy = py - oy;
-  
-//   return {
-//     x: ox + dx * cos - dy * sin,
-//     y: oy + dx * sin + dy * cos
-//   };
-// }
-
-// let centerX = maze.size / 2 + margin / 2;
-// let centerY = maze.size / 2 + margin / 2;
-
 class Ball {
   constructor(maze, margin) {
     this.radius = 15;
     this.color = "orange";
-    this.x = margin / 2 + this.radius + 1;     // initial x position
-    this.y = margin / 2 + this.radius + 1; // initial y position
-    this.dx = 0;          // x velocity
-    this.dy = 0;         // y velocity
-    this.gravity = 0.5;    // gravity affecting the ball
-    this.friction = 0.8;  // friction factor on each bounce to slow it down over time
+    this.x = margin/2 + this.radius + 1;
+    this.y = margin/2 + this.radius + 1;
+    this.dx = 0;
+    this.dy = 0;
+    this.gravity = 0.3;  // Reduced gravity for better control
+    this.friction = 0.95;  // Increased friction for smoother movement
     this.maze = maze;
     this.margin = margin;
   }
 
   draw(c) {
-    c.save()
-    c.fillStyle = this.color
-    c.beginPath()
-    c.arc(this.x, this.y, this.radius, 0, Math.PI * 2)
-    c.fill()
-    c.restore()
+    c.save();
+    c.fillStyle = this.color;
+    c.beginPath();
+    c.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    c.fill();
+    c.restore();
   }
 
   currentCell() {
-    const cellSize = this.maze.size / this.maze.rows
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    
+    // Get ball position relative to maze orientation
+    const rotatedPos = rotatePoint(
+      this.x, 
+      this.y, 
+      centerX, 
+      centerY, 
+      -angle  // Note the negative angle to reverse the rotation
+    );
 
-    const adjustedX = this.x - this.margin / 2
-    const adjustedY = this.y - this.margin / 2
-
-    const col = Math.floor(adjustedX / cellSize)
-    const row = Math.floor(adjustedY / cellSize)
-
+    const cellSize = this.maze.size / this.maze.rows;
+    const adjustedX = rotatedPos.x - this.margin/2;
+    const adjustedY = rotatedPos.y - this.margin/2;
+    
+    const col = Math.floor(adjustedX / cellSize);
+    const row = Math.floor(adjustedY / cellSize);
+    
+    // Add bounds checking
     if (col >= 0 && col < this.maze.cols && row >= 0 && row < this.maze.rows) {
-      return this.maze.grid[row][col]
-    } else {
-      console.log("out of bounds");
-      return null
+      return this.maze.grid[row][col];
     }
-
+    return null;
   }
 
   update(angle) {
+    // Calculate gravity based on rotation
+    const gravityX = this.gravity * Math.sin(angle);
+    const gravityY = this.gravity * Math.cos(angle);
 
-    // Calculating gravity
-    const gravityX = this.gravity * Math.sin(angle)
-    const gravityY = this.gravity * Math.cos(angle)
-    
-    // Applying gravity and friction
-    this.dx += gravityX
-    this.dy += gravityY
-    this.dx *= this.friction
-    this.dy *= this.friction
+    // Apply gravity
+    this.dx += gravityX;
+    this.dy += gravityY;
 
-    // Updating position
-    const newX = this.x + this.dx
-    const newY = this.y + this.dy
+    // Apply friction
+    this.dx *= this.friction;
+    this.dy *= this.friction;
 
-    const cell = this.currentCell()
-    // ball out of bounds error 
-    if (!cell) {
-      return
+    // Limit maximum velocity
+    const maxVelocity = 5;
+    this.dx = Math.max(Math.min(this.dx, maxVelocity), -maxVelocity);
+    this.dy = Math.max(Math.min(this.dy, maxVelocity), -maxVelocity);
+
+    // Calculate new position
+    const newX = this.x + this.dx;
+    const newY = this.y + this.dy;
+
+    // Get current cell
+    const cell = this.currentCell();
+    if (!cell) return;
+
+    const cellSize = this.maze.size / this.maze.rows;
+    const halfMargin = this.margin / 2;
+
+    const corners = [
+      { x: cell.colNum * cellSize + halfMargin, y: cell.rowNum * cellSize + halfMargin},
+      { x: (cell.colNum + 1) * cellSize + halfMargin, y: cell.rowNum * cellSize + halfMargin},
+      { x: cell.colNum * cellSize + halfMargin, y: (cell.rowNum + 1 ) * cellSize + halfMargin},
+      { x: (cell.colNum + 1) * cellSize + halfMargin, y: (cell.rowNum + 1 ) * cellSize + halfMargin},
+    ];
+
+    for (const corner of corners) {
+      const dx = newX - corner.x;
+      const dy = newY - corner.y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      
+      if (distance < this.radius) {
+        // Handle corner collision
+        const angle = Math.atan2(dy, dx);
+        return {
+          x: corner.x + Math.cos(angle) * this.radius,
+          y: corner.y + Math.sin(angle) * this.radius
+        };
+      }
     }
 
-    const cellSize = this.maze.size / this.maze.rows
-    const halfMargin = this.margin / 2
+    // Calculate cell boundaries
+    const cellLeft = (cell.colNum * cellSize) + halfMargin;
+    const cellRight = cellLeft + cellSize;
+    const cellTop = (cell.rowNum * cellSize) + halfMargin;
+    const cellBottom = cellTop + cellSize;
 
-    // Cell boundaries
-    const cellLeft = (cell.colNum * cellSize) + halfMargin
-    const cellRight = cellLeft + cellSize
-    const cellTop = (cell.rowNum * cellSize) + halfMargin
-    const cellBottom = cellTop + cellSize
-
-    let collision = false;
-
+    // Handle collisions
     if (cell.walls.leftWall && newX - this.radius < cellLeft) {
-      this.x = cellLeft + this.radius
-      this.dx *= -this.friction
-      collision = true
+      this.x = cellLeft + this.radius;
+      this.dx *= -0.5;  // Reduced bounce factor
     } else if (cell.walls.rightWall && newX + this.radius > cellRight) {
-      this.x = cellRight - this.radius
-      this.dx *= -this.friction
-      collision = true
+      this.x = cellRight - this.radius;
+      this.dx *= -0.5;
     } else {
       this.x = newX;
     }
 
     if (cell.walls.topWall && newY - this.radius < cellTop) {
-      this.y = cellTop + this.radius
-      this.dy *= -this.friction
-      collision = true
-    } else if (cell.walls.bottomWall && newY + this.radius > cellTop) {
-      this.y = cellBottom - this.radius
-      this.dy *= -this.friction
-      collision = true
+      this.y = cellTop + this.radius;
+      this.dy *= -0.5;
+    } else if (cell.walls.bottomWall && newY + this.radius > cellBottom) {
+      this.y = cellBottom - this.radius;
+      this.dy *= -0.5;
     } else {
-      this.y = newY
+      this.y = newY;
     }
-    
-    // Add minimum velocity threshold to prevent endless tiny movements
+
+    // Stop tiny movements
     if (Math.abs(this.dx) < 0.01) this.dx = 0;
     if (Math.abs(this.dy) < 0.01) this.dy = 0;
-  
   }
-
 }
+
+// Keyboard controls
+document.addEventListener('keydown', (e) => {
+  switch(e.key) {
+    case 'ArrowLeft':
+      isRotatingLeft = true;
+      break;
+    case 'a':
+      isRotatingLeft = true;
+      break;
+    case 'ArrowRight':
+      isRotatingRight = true;
+      break;
+    case 'd':
+      isRotatingRight = true;
+      break;
+  }
+});
+
+document.addEventListener('keyup', (e) => {
+  switch(e.key) {
+    case 'ArrowLeft':
+      isRotatingLeft = false;
+      break;
+    case 'a':
+      isRotatingLeft = false;
+      break;
+    case 'ArrowRight':
+      isRotatingRight = false;
+      break;
+    case 'd':
+      isRotatingRight = false;
+      break;
+  }
+});
 
 function rotatePoint(px, py, ox, oy, angle) {
   const cos = Math.cos(angle);
@@ -343,36 +391,48 @@ function rotatePoint(px, py, ox, oy, angle) {
 
 function render() {
   
+  // Update rotation based on keyboard input
+  if (isRotatingLeft) {
+    angle -= rotationSpeed;
+  }
+  if (isRotatingRight) {
+    angle += rotationSpeed;
+  }
+
   // Clear canvas
   c.clearRect(0, 0, canvas.width, canvas.height);
-
-  maze.draw()
-
-  ball.update(angle)
-
-  ball.draw(c)
-
+  
+  // Save canvas state
+  c.save();
+  
+  // Move to center, rotate, move back
+  c.translate(canvas.width/2, canvas.height/2);
+  c.rotate(angle);
+  c.translate(-canvas.width/2, -canvas.height/2);
+  
+  // Draw maze
+  maze.draw();
+  
+  // Update and draw ball
+  ball.update(angle);
+  ball.draw(c);
+  
+  // Restore canvas state
+  c.restore();
+  // console.log(ball.currentCell())
   requestAnimationFrame(render);
 
 }
 
-// init
-const maze = new Maze(500, 10, 10)
-maze.setup()
-const ball = new Ball(maze, margin)
+// Game state
+const maze = new Maze(500, 10, 10);
+const ball = new Ball(maze, margin);
+const rotationSpeed = 0.01;  // Rotation speed in radians
+let isRotatingLeft = false;
+let isRotatingRight = false;
 
+maze.setup()
 render()
 
-// Update angle based on mouse position. Only after the maze generation animation has ended.
-canvas.addEventListener("mousemove", (event) => {
-  const rect = canvas.getBoundingClientRect()
-  const x = event.clientX - rect.left - canvas.width/2
-  const y = event.clientY - rect.top - canvas.height/2
-
-  angle = Math.atan2(y, x)
-  
-});
-
 // console.log(maze.grid)
-console.log(ball.currentCell())
 
