@@ -287,28 +287,6 @@ class Ball {
     const cellSize = this.maze.size / this.maze.rows;
     const halfMargin = this.margin / 2;
 
-    const corners = [
-      { x: cell.colNum * cellSize + halfMargin, y: cell.rowNum * cellSize + halfMargin},
-      { x: (cell.colNum + 1) * cellSize + halfMargin, y: cell.rowNum * cellSize + halfMargin},
-      { x: cell.colNum * cellSize + halfMargin, y: (cell.rowNum + 1 ) * cellSize + halfMargin},
-      { x: (cell.colNum + 1) * cellSize + halfMargin, y: (cell.rowNum + 1 ) * cellSize + halfMargin},
-    ];
-
-    for (const corner of corners) {
-      const dx = newX - corner.x;
-      const dy = newY - corner.y;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-      
-      if (distance < this.radius) {
-        // Handle corner collision
-        const angle = Math.atan2(dy, dx);
-        return {
-          x: corner.x + Math.cos(angle) * this.radius,
-          y: corner.y + Math.sin(angle) * this.radius
-        };
-      }
-    }
-
     // Calculate cell boundaries
     const cellLeft = (cell.colNum * cellSize) + halfMargin;
     const cellRight = cellLeft + cellSize;
@@ -427,7 +405,7 @@ function render() {
 // Game state
 const maze = new Maze(500, 10, 10);
 const ball = new Ball(maze, margin);
-const rotationSpeed = 0.01;  // Rotation speed in radians
+const rotationSpeed = 0.002;  // Rotation speed in radians
 let isRotatingLeft = false;
 let isRotatingRight = false;
 
