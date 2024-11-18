@@ -4,6 +4,8 @@ let current;
 let angle = 0; // initial angle of rotation
 let margin = 200;
 const halfMargin = margin / 2;
+let wins = 0;
+let hasWon = false;
 
 class Maze{
     constructor(size,rows,columns) {
@@ -227,17 +229,15 @@ class Ball {
   constructor(maze, margin) {
     this.radius = 15;
     this.color = "orange";
-    this.x = margin / 2 + this.radius + 1;
-    this.y = margin / 2 + this.radius + 1;
-    this.dx = 0;
-    this.dy = 0;
-    this.gravity = 0.15;
-    this.friction = 0.95;
-    this.bounce = 0.5;
+    this.x = 650 - margin / 2 + this.radius + 2; // posição inicial
+    this.y = 650 - margin / 2 + this.radius + 2;
+    this.dx = 0; // velocidade no eixo x
+    this.dy = 0; // velocidade no eixo y
+    this.gravity = 0.95;
+    this.friction = 0.65;
     this.maze = maze;
     this.margin = margin;
     this.lastRotatedAngle = 0;
-    this.rotationStep = 0.05;
   }
 
   getRotatedPosition(angle) {
@@ -258,6 +258,7 @@ class Ball {
     if (col >= 0 && col < this.maze.cols && row >= 0 && row < this.maze.rows) {
       return this.maze.grid[row][col];
     }
+
     return null;
   }
 
@@ -267,8 +268,11 @@ class Ball {
     const rotatedPos = rotatePoint(newX, newY, centerX, centerY, -angle);
     
     const cell = this.currentCell(angle);
-    if (!cell) return true;
-    
+    if (!cell) {
+      console.log("out of bounds");
+      return true;
+    }
+
     const cellSize = this.maze.size / this.maze.rows;
     const halfMargin = this.margin / 2;
     
@@ -277,7 +281,7 @@ class Ball {
     const cellTop = (cell.rowNum * cellSize) + halfMargin;
     const cellBottom = cellTop + cellSize;
     
-    const buffer = 1;
+    const buffer = 2;
 
     if ((cell.walls.leftWall && rotatedPos.x - this.radius < cellLeft + buffer) ||
         (cell.walls.rightWall && rotatedPos.x + this.radius > cellRight - buffer) ||
@@ -326,8 +330,8 @@ class Ball {
       this.x = newX;
       this.y = newY;
     } else {
-      this.dx *= -0.5;
-      this.dy *= -0.5;
+      this.dx *= -0.4; // nivel de bounce
+      this.dy *= -0.4; // nivel de bounce
     }
 
     if (Math.abs(this.dx) < 0.01) this.dx = 0;
@@ -368,6 +372,8 @@ function render() {
   ball.draw(c);
   
   angle = ball.lastRotatedAngle;
+
+  GameState()
   
   c.restore();
   requestAnimationFrame(render);
@@ -400,12 +406,61 @@ document.addEventListener('keyup', (e) => {
   }
 });
 
-// Game state
-const maze = new Maze(500, 10, 10);
+function colorCollision(r, g, b) {
+  const x = Math.floor(ball.x);
+  const y = Math.floor(ball.y); 
+  let colorHIT = 0;
+
+  
+  let imageData = c.getImageData(x + ball.radius + 2, y + ball.radius + 2, 1, 1);
+  const data = imageData.data;
+
+  let imageData2 = c.getImageData(x - ball.radius + 2, y - ball.radius + 2, 1, 1);
+  const data2 = imageData2.data;
+
+  let imageData3 = c.getImageData(x + ball.radius + 2, y - ball.radius + 2, 1, 1);
+  const data3 = imageData3.data;
+
+  let imageData4 = c.getImageData(x - ball.radius + 2, y + ball.radius + 2, 1, 1);
+  const data4 = imageData4.data;
+
+  const [r2, g2, b2] = [data[0], data[1], data[2]];
+  const [r3, g3, b3] = [data2[0], data2[1], data2[2]];
+  const [r4, g4, b4] = [data3[0], data3[1], data3[2]];
+  const [r5, g5, b5] = [data4[0], data4[1], data4[2]];
+
+  if (r2 == r && g2 == g && b2 == b) {
+   colorHIT+=1; 
+  }
+  if (r3 == r && g3 == g && b3 == b) {
+    colorHIT+=1;
+  }
+  if (r4 == r && g4 == g && b4 == b) {
+    colorHIT+=1;
+  }
+  if (r5 == r && g5 == g && b5 == b) {
+    colorHIT+=1;
+  }
+
+  return  colorHIT >= 3 ? true : false;
+}
+
+const maze = new Maze(500, 3, 3);
 const ball = new Ball(maze, margin);
 const rotationSpeed = 0.002;
 let isRotatingLeft = false;
 let isRotatingRight = false;
+
+function GameState() {
+  let winsHeader = document.querySelector("#numberOfWins");
+
+  if (colorCollision(0, 128, 0) && !hasWon) {
+    wins +=1;
+    hasWon = true;
+    winsHeader.innerHTML += `${wins}`;
+  } 
+  
+}
 
 maze.setup();
 render();
