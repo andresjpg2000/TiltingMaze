@@ -6,6 +6,8 @@ let margin = 200;
 const halfMargin = margin / 2;
 let wins = 0;
 let hasWon = false;
+const numCol = 3;
+const numRow = 3;
 
 class Maze{
     constructor(size,rows,columns) {
@@ -445,8 +447,9 @@ function colorCollision(r, g, b) {
   return  colorHIT >= 3 ? true : false;
 }
 
-const maze = new Maze(500, 3, 3);
+const maze = new Maze(500, numCol, numRow);
 const ball = new Ball(maze, margin);
+const gameStartTime = Date.now();
 const rotationSpeed = 0.002;
 let isRotatingLeft = false;
 let isRotatingRight = false;
@@ -454,15 +457,40 @@ let isRotatingRight = false;
 function GameState() {
   let winsHeader = document.querySelector("#numberOfWins");
 
-  if (colorCollision(0, 128, 0) && !hasWon) {
+  let currentTime = Date.now();
+  let timePlayed = (currentTime - gameStartTime) / 1000
+  
+
+  if (colorCollision(0, 128, 0) && !hasWon && timePlayed >= 3) {
     wins +=1;
     hasWon = true;
     winsHeader.innerHTML += `${wins}`;
+    modal.style.display = "block";
   } 
   
 }
 
 maze.setup();
 render();
-// console.log(maze.grid)
+
+// Modal de vitória
+
+var modal = document.querySelector("#myModal")
+var btn = document.querySelector("#modalBtn")
+var span = document.querySelector(".close")
+
+span.addEventListener("click", () => {
+  modal.style.display = "none";
+})
+
+// Fechar modal ao clicar fora da modal
+window.addEventListener("click", (event) => {
+  
+  if ( event.target == modal ) {
+    modal.style.display = "none";
+  }
+
+})
+
+
 
