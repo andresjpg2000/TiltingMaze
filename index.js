@@ -6,8 +6,15 @@ let margin = 200;
 const halfMargin = margin / 2;
 let wins = 0;
 let hasWon = false;
+let isRotatingLeft = false;
+let isRotatingRight = false;
 const numCol = 3;
 const numRow = 3;
+const rotationSpeed = 0.002;
+let gameStartTime = Date.now();
+let maze;
+let ball;
+let animation;
 
 class Maze{
     constructor(size,rows,columns) {
@@ -235,7 +242,7 @@ class Ball {
     this.y = 650 - margin / 2 + this.radius + 2;
     this.dx = 0; // velocidade no eixo x
     this.dy = 0; // velocidade no eixo y
-    this.gravity = 0.95;
+    this.gravity = 0.65;
     this.friction = 0.65;
     this.maze = maze;
     this.margin = margin;
@@ -374,11 +381,12 @@ function render() {
   ball.draw(c);
   
   angle = ball.lastRotatedAngle;
-
-  GameState()
   
   c.restore();
-  requestAnimationFrame(render);
+
+  animation = requestAnimationFrame(render);
+
+  GameState()
 }
 
 // Keyboard controls
@@ -447,12 +455,16 @@ function colorCollision(r, g, b) {
   return  colorHIT >= 3 ? true : false;
 }
 
-const maze = new Maze(500, numCol, numRow);
-const ball = new Ball(maze, margin);
-const gameStartTime = Date.now();
-const rotationSpeed = 0.002;
-let isRotatingLeft = false;
-let isRotatingRight = false;
+function initGame(numCol, numRow) {
+  hasWon = false;
+  
+  maze = new Maze(500, numCol, numRow);
+  ball = new Ball(maze, margin);
+  gameStartTime = Date.now();
+
+  maze.setup();
+  render();
+}
 
 function GameState() {
   let winsHeader = document.querySelector("#numberOfWins");
@@ -464,14 +476,12 @@ function GameState() {
   if (colorCollision(0, 128, 0) && !hasWon && timePlayed >= 3) {
     wins +=1;
     hasWon = true;
-    winsHeader.innerHTML += `${wins}`;
+    winsHeader.innerHTML = `Wins: ${wins}`;
     modal.style.display = "block";
+    cancelAnimationFrame(animation);
   } 
   
 }
-
-maze.setup();
-render();
 
 // Modal de vitória
 
@@ -480,7 +490,9 @@ var btn = document.querySelector("#modalBtn")
 var span = document.querySelector(".close")
 
 span.addEventListener("click", () => {
+  
   modal.style.display = "none";
+
 })
 
 // Fechar modal ao clicar fora da modal
@@ -492,5 +504,20 @@ window.addEventListener("click", (event) => {
 
 })
 
+// Botão para voltar para o menu
+var leaveBTN = document.querySelector("#leaveBTN");
+leaveBTN.addEventListener("click", () => {
+  
+  window.location.href = "./Menu.html";
 
+})
+// Botão para voltar a jogar
+var playAgain = document.querySelector("#yesBTN");
+playAgain.addEventListener("click", () => {
+  
+  modal.style.display = "none";
+  initGame(3,3)
 
+})
+
+initGame(3,3)

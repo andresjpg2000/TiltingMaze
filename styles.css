@@ -56,6 +56,25 @@ label{
   cursor: pointer;
 }
 
+#yesBTN {
+  background-color: #2EC4B6;
+  margin-right: 2rem;
+}
+
+#yesBTN:hover {
+  background-color: #fff;
+  color: #2EC4B6;
+  border: 2px solid hsl(174, 62%, 47%);
+  box-shadow: 5px 5px 0px #2EC4B6;
+}
+
+#yesBTN:active {
+  background-color: #fff;
+  color: #2EC4B6;
+  box-shadow: none;
+  transform: translateY(4px);
+}
+
 /* Estilos do menu  */
 
 /* SVG gerado em heropatterns.com */
@@ -104,7 +123,6 @@ button:hover {
 }
 
 button:active {
-  /* background-color: #fff; */
   box-shadow: none;
   transform: translateY(4px);
 }
