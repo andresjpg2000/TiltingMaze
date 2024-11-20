@@ -18,6 +18,25 @@
         </ul>  
     </div>
 
+    <script>
+        var easyBTN = document.querySelector("#easyBTN")
+        easyBTN.addEventListener("click", () => {
+            localStorage.setItem("mazeDifficulty", JSON.stringify({ numCols: 3, numRows: 3}))
+            window.location.href = "./Maze.html";
+        })
+
+        var hardBTN = document.querySelector("#hardBTN")
+        hardBTN.addEventListener("click", () => {
+            localStorage.setItem("mazeDifficulty", JSON.stringify({ numCols: 7, numRows: 7}))
+            window.location.href = "./Maze.html";
+        })
+
+        var customBTN = document.querySelector("#customBTN")
+        customBTN.addEventListener("click", () => {
+            localStorage.setItem("mazeDifficulty", JSON.stringify({custom: true}))
+            window.location.href = "./Maze.html";
+        })
+    </script>
 </body>
 
 </html>

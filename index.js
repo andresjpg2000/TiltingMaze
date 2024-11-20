@@ -1,20 +1,38 @@
 const canvas = document.querySelector("#myCanvas");
 let c = canvas.getContext("2d");
 let current;
-let angle = 0; // initial angle of rotation
+let angle = 0;
 let margin = 200;
 const halfMargin = margin / 2;
 let wins = 0;
 let hasWon = false;
 let isRotatingLeft = false;
 let isRotatingRight = false;
-const numCol = 3;
-const numRow = 3;
+let numCols = 3;
+let numRows = 3;
 const rotationSpeed = 0.002;
 let gameStartTime = Date.now();
 let maze;
 let ball;
 let animation;
+
+const options = document.querySelector(".options");
+
+const difficulty = JSON.parse(localStorage.getItem("mazeDifficulty"));
+
+if (difficulty) {
+  if (difficulty.custom) {
+    
+  } else {
+    numCols = difficulty.numCols;
+    numRows = difficulty.numRows;
+    options.style.display = "none";
+  }
+} else {
+    numCols = 3;
+    numRows = 3;
+    options.style.display = "none";
+}
 
 class Maze{
     constructor(size,rows,columns) {
@@ -516,8 +534,8 @@ var playAgain = document.querySelector("#yesBTN");
 playAgain.addEventListener("click", () => {
   
   modal.style.display = "none";
-  initGame(3,3)
+  initGame(numCols, numRows)
 
 })
 
-initGame(3,3)
+initGame(numCols, numRows)

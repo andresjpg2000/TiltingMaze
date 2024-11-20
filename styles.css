@@ -7,6 +7,12 @@ body{
   overflow: hidden;
 }
 
+header {
+  display: flex;
+  flex-direction: column;
+  padding-left: 8rem;
+}
+
 h1, h2, h3{
   color: azure;
 }
