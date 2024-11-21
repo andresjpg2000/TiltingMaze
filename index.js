@@ -17,16 +17,18 @@ let ball;
 let animation;
 
 const options = document.querySelector(".options");
+const header = document.querySelector("header");
 
 const difficulty = JSON.parse(localStorage.getItem("mazeDifficulty"));
 
 if (difficulty) {
   if (difficulty.custom) {
-    
+    header.style.marginBottom = "300px";
   } else {
     numCols = difficulty.numCols;
     numRows = difficulty.numRows;
     options.style.display = "none";
+    header.style.marginBottom = "500px";
   }
 } else {
     numCols = 3;
@@ -376,6 +378,8 @@ class Ball {
 }
 
 function render() {
+  updateProperties();
+
   let targetAngle = angle;
 
   if (isRotatingLeft) {
@@ -501,17 +505,15 @@ function GameState() {
   
 }
 
+// var backToMenu = document.querySelector("#numberOfWins");
+// backToMenu.addEventListener("click", () => {
+//   window
+// })
+
 // Modal de vitória
 
 var modal = document.querySelector("#myModal")
 var btn = document.querySelector("#modalBtn")
-var span = document.querySelector(".close")
-
-span.addEventListener("click", () => {
-  
-  modal.style.display = "none";
-
-})
 
 // Fechar modal ao clicar fora da modal
 window.addEventListener("click", (event) => {
@@ -529,6 +531,7 @@ leaveBTN.addEventListener("click", () => {
   window.location.href = "./Menu.html";
 
 })
+
 // Botão para voltar a jogar
 var playAgain = document.querySelector("#yesBTN");
 playAgain.addEventListener("click", () => {
@@ -537,5 +540,23 @@ playAgain.addEventListener("click", () => {
   initGame(numCols, numRows)
 
 })
+
+// Modal de vitória
+
+// Propriedades
+
+
+// var rowSlider = document.querySelector("#rows").value;
+// var colSlider = document.querySelector("#columns").value;
+
+function updateProperties() {
+  var gravitySlider = document.querySelector("#gravity").value;
+  var frictionSlider = document.querySelector("#friction").value;
+
+  ball.gravity = gravitySlider;
+  ball.friction = frictionSlider;
+}
+
+// Propriedades
 
 initGame(numCols, numRows)
