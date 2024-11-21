@@ -266,21 +266,15 @@ class Ball {
     this.y = maze.cols >= 8 ?  550 - margin / 2 + this.radius + 12: 550 - margin / 2 + this.radius + 2;
     this.dx = 0; // velocidade no eixo x
     this.dy = 0; // velocidade no eixo y
-    this.gravity = 0.65;
-    this.friction = 0.65;
+    this.gravity = difficulty.custom ? parseFloat(gravitySlider.value) : 0.65;
+    this.friction = difficulty.custom ? parseFloat(gravitySlider.value) : 0.65;
     this.maze = maze;
     this.margin = margin;
     this.lastRotatedAngle = 0;
   }
 
-  getRotatedPosition(angle) {
-    const centerX = canvas.width / 2;
-    const centerY = canvas.height / 2;
-    return rotatePoint(this.x, this.y, centerX, centerY, angle);
-  }
-
   currentCell(rotationAngle = 0) {
-    const rotatedPos = this.getRotatedPosition(-rotationAngle);
+    const rotatedPos = rotatePoint(this.x, this.y, canvas.width / 2, canvas.height / 2, -rotationAngle)
     const cellSize = this.maze.size / this.maze.rows;
     const adjustedX = rotatedPos.x - this.margin / 2;
     const adjustedY = rotatedPos.y - this.margin / 2;
@@ -334,7 +328,7 @@ class Ball {
     if (Math.abs(angleChange) > 0.0001) {
       const increment = angleChange;
       const newAngle = this.lastRotatedAngle + increment;
-      const rotatedPos = this.getRotatedPosition(increment);
+      const rotatedPos = rotatePoint(this.x, this.y, canvas.width / 2, canvas.height / 2, increment)
       
       if (!this.checkWallCollision(rotatedPos.x, rotatedPos.y, newAngle)) {
         this.x = rotatedPos.x;
@@ -367,8 +361,6 @@ class Ball {
       this.dy *= -0.4; // nivel de bounce
     }
 
-    if (Math.abs(this.dx) < 0.01) this.dx = 0;
-    if (Math.abs(this.dy) < 0.01) this.dy = 0;
   }
 
   draw(c) {
@@ -382,7 +374,7 @@ class Ball {
 }
 
 function render() {
-  updateProperties();
+  // updateProperties();
 
   let targetAngle = angle;
 
@@ -456,6 +448,7 @@ function colorCollision(r, g, b) {
 
 function initGame(numCol, numRow) {
   hasWon = false;
+  Controls()
   
   maze = new Maze(400, numCol, numRow);
   ball = new Ball(maze, margin);
@@ -464,16 +457,15 @@ function initGame(numCol, numRow) {
   maze.setup();
   render();
 
-  Controls()
 }
 
+// Função que lida com a vitória. 
 function GameState() {
   let winsHeader = document.querySelector("#numberOfWins");
 
   let currentTime = Date.now();
   let timePlayed = (currentTime - gameStartTime) / 1000
   
-
   if (colorCollision(0, 128, 0) && !hasWon && timePlayed >= 3) {
     wins +=1;
     hasWon = true;
@@ -571,8 +563,6 @@ function Controls() {
 
     gravitySlider.value = 0.65;
     frictionSlider.value = 0.65;
-
-    updateProperties()
 
   });
   
