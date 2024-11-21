@@ -256,8 +256,8 @@ class Ball {
   constructor(maze, margin) {
     this.radius = 15;
     this.color = "orange";
-    this.x = 650 - margin / 2 + this.radius + 2; // posição inicial
-    this.y = 650 - margin / 2 + this.radius + 2;
+    this.x = 550 - margin / 2 + this.radius + 2; // posição inicial
+    this.y = 550 - margin / 2 + this.radius + 2;
     this.dx = 0; // velocidade no eixo x
     this.dy = 0; // velocidade no eixo y
     this.gravity = 0.65;
@@ -476,7 +476,7 @@ function colorCollision(r, g, b) {
 function initGame(numCol, numRow) {
   hasWon = false;
   
-  maze = new Maze(500, numCol, numRow);
+  maze = new Maze(400, numCol, numRow);
   ball = new Ball(maze, margin);
   gameStartTime = Date.now();
 

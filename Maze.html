@@ -7,27 +7,36 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <canvas id="myCanvas"></canvas>
+    <div class="parent">
+        <canvas id="myCanvas"></canvas>
 
-    <header>
-        <h1>Tilting Maze</h1>
-        <h3 id="numberOfWins">Wins: </h3>
-    </header>
-    
-    <div class="options">
-        <h2>Propriedades da bola</h2>
-        <label for="gravity">Gravidade</label>
-        <input type="number" id="gravity" min="1" max="10" placeholder="1">
-        <br>
-        <label for="friction">Atrito</label>
-        <input type="number" id="friction" min="1" max="10" placeholder="1">
-
-        <h2>Propriedades do labirinto</h2>
-        <label for="#rows">Linhas</label>
-        <input type="number" id="rows" min="5" max="20" placeholder="1">
-        <br>
-        <label for="columns">Colunas</label>
-        <input type="number" id="columns" min="5" max="20" placeholder="1">
+        <header>
+            <!-- <img id="titleMaze" src="./media/TiltingMaze.png" alt="TiltingMaze" width="451" height="46"> -->
+            <h1 class="text3D">TILTING MAZE</h1>
+            <div class="wrapper">
+                <!-- <img src="./media/WINS-21-11-2024.png" alt="WINS" width="100" height="46"> -->
+                <h3 class="text3D" id="numberOfWins">WINS:</h3>
+            </div>
+        </header>
+        
+        <div class="options">
+            <h2>Ball properties</h2>
+            <label for="gravity">Gravity</label>
+            <!-- <input type="number" id="gravity" min="1" max="10" placeholder="1"> -->
+            <input type="range" min="0.1" max="10" value="1" class="slider" id="gravity">
+            <br>
+            <label for="friction">Friction</label>
+            <!-- <input type="number" id="friction" min="1" max="10" placeholder="1"> -->
+            <input type="range" min="0.1" max="10" value="1" class="slider" id="friction">
+            <h2>Maze properties</h2>
+            <label for="#rows">Rows</label>
+            <!-- <input type="number" id="rows" min="5" max="20" placeholder="1"> -->
+            <input type="range" min="3" max="20" value="1" class="slider" id="rows">
+            <br>
+            <label for="columns">Columns</label>
+            <!-- <input type="number" id="columns" min="5" max="20" placeholder="1"> -->
+            <input type="range" min="3" max="20" value="1" class="slider" id="columns">
+        </div>
     </div>
     
     <div id="myModal" class="modal">
