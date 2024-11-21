@@ -415,33 +415,6 @@ function render() {
   GameState()
 }
 
-// Keyboard controls
-document.addEventListener('keydown', (e) => {
-  switch(e.key) {
-    case 'ArrowLeft':
-    case 'a':
-      isRotatingLeft = true;
-      break;
-    case 'ArrowRight':
-    case 'd':
-      isRotatingRight = true;
-      break;
-  }
-});
-
-document.addEventListener('keyup', (e) => {
-  switch(e.key) {
-    case 'ArrowLeft':
-    case 'a':
-      isRotatingLeft = false;
-      break;
-    case 'ArrowRight':
-    case 'd':
-      isRotatingRight = false;
-      break;
-  }
-});
-
 function colorCollision(r, g, b) {
   const x = Math.floor(ball.x);
   const y = Math.floor(ball.y); 
@@ -490,6 +463,8 @@ function initGame(numCol, numRow) {
 
   maze.setup();
   render();
+
+  Controls()
 }
 
 function GameState() {
@@ -542,20 +517,65 @@ playAgain.addEventListener("click", () => {
 
 // Modal de vitória
 
-// Propriedades
-
-
-// var rowSlider = document.querySelector("#rows").value;
-// var colSlider = document.querySelector("#columns").value;
+var gravitySlider = document.querySelector("#gravity");
+var frictionSlider = document.querySelector("#friction");
+var resetBTN = document.querySelector("#resetBTN");
 
 function updateProperties() {
-  var gravitySlider = document.querySelector("#gravity").value;
-  var frictionSlider = document.querySelector("#friction").value;
 
-  ball.gravity = gravitySlider;
-  ball.friction = frictionSlider;
+  gravitySlider.addEventListener("input", () => {
+    ball.gravity = parseFloat(gravitySlider.value);
+  });
+
+  frictionSlider.addEventListener("input", () => {
+    ball.friction = parseFloat(frictionSlider.value);
+  });
+
 }
 
-// Propriedades
+function Controls() {
+  
+  document.addEventListener('keydown', (e) => {
+    switch(e.key) {
+      case 'ArrowLeft':
+      case 'a':
+        isRotatingLeft = true;
+        break;
+      case 'ArrowRight':
+      case 'd':
+        isRotatingRight = true;
+        break;
+    }
+  });
+
+  document.addEventListener('keyup', (e) => {
+    switch(e.key) {
+      case 'ArrowLeft':
+      case 'a':
+        isRotatingLeft = false;
+        break;
+      case 'ArrowRight':
+      case 'd':
+        isRotatingRight = false;
+        break;
+    }
+  });
+
+  gravitySlider.addEventListener("input", updateProperties)
+  frictionSlider.addEventListener("input", updateProperties)
+
+  resetBTN.addEventListener("click", () => {
+    
+    ball.gravity = 0.65;
+    ball.friction = 0.65;
+
+    gravitySlider.value = 0.65;
+    frictionSlider.value = 0.65;
+
+    updateProperties()
+
+  });
+  
+}
 
 initGame(numCols, numRows)
