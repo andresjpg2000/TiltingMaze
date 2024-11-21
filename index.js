@@ -1,5 +1,6 @@
 const canvas = document.querySelector("#myCanvas");
 let c = canvas.getContext("2d");
+
 let current;
 let angle = 0;
 let margin = 200;
@@ -373,40 +374,6 @@ class Ball {
   }
 }
 
-function render() {
-  // updateProperties();
-
-  let targetAngle = angle;
-
-  if (isRotatingLeft) {
-    targetAngle -= rotationSpeed;
-  }
-  
-  if (isRotatingRight) {
-    targetAngle += rotationSpeed;
-  }
-  
-  c.clearRect(0, 0, canvas.width, canvas.height);
-  c.save();
-  
-  c.translate(canvas.width / 2, canvas.height / 2);
-  c.rotate(angle);
-  c.translate(-canvas.width / 2, -canvas.height / 2);
-  
-  maze.draw();
-  
-  ball.update(targetAngle);
-  ball.draw(c);
-  
-  angle = ball.lastRotatedAngle;
-  
-  c.restore();
-
-  animation = requestAnimationFrame(render);
-
-  GameState()
-}
-
 function colorCollision(r, g, b) {
   const x = Math.floor(ball.x);
   const y = Math.floor(ball.y); 
@@ -444,6 +411,39 @@ function colorCollision(r, g, b) {
   }
 
   return  colorHIT >= 3 ? true : false;
+}
+
+function render() {
+
+  let targetAngle = angle;
+
+  if (isRotatingLeft) {
+    targetAngle -= rotationSpeed;
+  }
+  
+  if (isRotatingRight) {
+    targetAngle += rotationSpeed;
+  }
+  
+  c.clearRect(0, 0, canvas.width, canvas.height);
+  c.save();
+  
+  c.translate(canvas.width / 2, canvas.height / 2);
+  c.rotate(angle);
+  c.translate(-canvas.width / 2, -canvas.height / 2);
+  
+  maze.draw();
+  
+  ball.update(targetAngle);
+  ball.draw(c);
+  
+  angle = ball.lastRotatedAngle;
+  
+  c.restore();
+
+  animation = requestAnimationFrame(render);
+
+  GameState()
 }
 
 function initGame(numCol, numRow) {
