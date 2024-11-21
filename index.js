@@ -23,12 +23,16 @@ const difficulty = JSON.parse(localStorage.getItem("mazeDifficulty"));
 
 if (difficulty) {
   if (difficulty.custom) {
-    header.style.marginBottom = "300px";
+    header.style.marginBottom = "224px";
+    numCols = difficulty.numCols;
+    numRows = difficulty.numRows;
+
   } else {
     numCols = difficulty.numCols;
     numRows = difficulty.numRows;
     options.style.display = "none";
     header.style.marginBottom = "500px";
+
   }
 } else {
     numCols = 3;
@@ -62,7 +66,7 @@ class Maze{
     draw() {
         canvas.width = this.size + margin
         canvas.height = this.size + margin
-        canvas.style.background = "black"
+        canvas.style.background = "#2EC4B6"
 
         let offsetX = (canvas.width - this.size) / 2;
         let offsetY = (canvas.height - this.size) / 2;
@@ -99,7 +103,7 @@ class Maze{
             current.removeWalls(current, next)
             current = next
         } else if (this.stack.length > 0) {
-            current.color = "black"
+            current.color = "#2EC4B6"
             let cell = this.stack.pop()
             current.highlight()
             current = cell
@@ -132,7 +136,7 @@ class Cell{
       }
       this.visited = false
       this.neighbours = []
-      this.color = "black"
+      this.color = "#2EC4B6"
       this.x = colNum * this.size
       this.y = rowNum * this.size
     }
@@ -162,7 +166,7 @@ class Cell{
     }
 
     drawLine(fromX, fromY, toX, toY) {
-        c.lineWidth = 2
+        c.lineWidth = 4
         c.strokeStyle = "white"
         c.beginPath()
         c.moveTo(fromX, fromY)
@@ -256,10 +260,10 @@ function rotatePoint(px, py, ox, oy, angle) {
 
 class Ball {
   constructor(maze, margin) {
-    this.radius = 15;
-    this.color = "orange";
-    this.x = 550 - margin / 2 + this.radius + 2; // posição inicial
-    this.y = 550 - margin / 2 + this.radius + 2;
+    this.radius = maze.cols >= 8 ? 12 : 15;
+    this.color = "#011627";
+    this.x = maze.cols >= 8 ?  550 - margin / 2 + this.radius + 19: 550 - margin / 2 + this.radius + 2; // posição inicial
+    this.y = maze.cols >= 8 ?  550 - margin / 2 + this.radius + 12: 550 - margin / 2 + this.radius + 2;
     this.dx = 0; // velocidade no eixo x
     this.dy = 0; // velocidade no eixo y
     this.gravity = 0.65;
@@ -504,11 +508,6 @@ function GameState() {
   } 
   
 }
-
-// var backToMenu = document.querySelector("#numberOfWins");
-// backToMenu.addEventListener("click", () => {
-//   window
-// })
 
 // Modal de vitória
 

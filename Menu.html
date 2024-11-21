@@ -33,7 +33,15 @@
 
         var customBTN = document.querySelector("#customBTN")
         customBTN.addEventListener("click", () => {
-            localStorage.setItem("mazeDifficulty", JSON.stringify({custom: true}))
+            
+            num = prompt("How many rows/columns do you want the maze to have? (3-10)")
+
+            if (num < 3 || num > 10) {
+                alert("The number of rows/columns should be a number between 3-10")
+                return;
+            }
+
+            localStorage.setItem("mazeDifficulty", JSON.stringify({custom: true, numCols: num, numRows: num}))
             window.location.href = "./Maze.html";
         })
     </script>
