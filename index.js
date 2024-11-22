@@ -1,7 +1,7 @@
 const canvas = document.querySelector("#myCanvas");
 let c = canvas.getContext("2d");
 
-let current;
+let current; // Variavel usada na criação do labirinto
 let angle = 0;
 let margin = 200;
 const halfMargin = margin / 2;
@@ -11,7 +11,7 @@ let isRotatingLeft = false;
 let isRotatingRight = false;
 let numCols = 3;
 let numRows = 3;
-const rotationSpeed = 0.002;
+const rotationSpeed = 0.003; // Controla a velocidade de rotação do labirinto
 let gameStartTime = Date.now();
 let maze;
 let ball;
@@ -99,7 +99,7 @@ class Maze{
         if (next) {
             next.visited = true
             this.stack.push(current)
-            current.color = "green"
+            current.color = "#FF3366"
             current.highlight()
             current.removeWalls(current, next)
             current = next
@@ -248,6 +248,9 @@ class Cell{
 }
 
 function rotatePoint(px, py, ox, oy, angle) {
+  // Centro do labirinto tem as coordenadas (ox, oy)
+  // Coordenadas da bola (px, py)
+  
   const cos = Math.cos(angle);
   const sin = Math.sin(angle);
   const dx = px - ox;
@@ -271,7 +274,7 @@ class Ball {
     this.friction = difficulty.custom ? parseFloat(gravitySlider.value) : 0.65;
     this.maze = maze;
     this.margin = margin;
-    this.lastRotatedAngle = 0;
+    this.lastRotatedAngle = 0; // guardar angulo anterior para conseguir incrementar rotação
   }
 
   currentCell(rotationAngle = 0) {
@@ -309,7 +312,7 @@ class Ball {
     const cellTop = (cell.rowNum * cellSize) + halfMargin;
     const cellBottom = cellTop + cellSize;
     
-    const buffer = 2;
+    const buffer = 2; // Separar a bola das paredes para evitar que a bola passe por elas
 
     if ((cell.walls.leftWall && rotatedPos.x - this.radius < cellLeft + buffer) ||
         (cell.walls.rightWall && rotatedPos.x + this.radius > cellRight - buffer) ||
@@ -326,7 +329,7 @@ class Ball {
     const angleChange = targetAngle - this.lastRotatedAngle;
     
     // Dividir rotação em vários passos para evitar erros
-    if (Math.abs(angleChange) > 0.0001) {
+    if (angleChange) {
       const increment = angleChange;
       const newAngle = this.lastRotatedAngle + increment;
       const rotatedPos = rotatePoint(this.x, this.y, canvas.width / 2, canvas.height / 2, increment)
@@ -348,18 +351,18 @@ class Ball {
     this.dy *= this.friction;
     
     const maxVelocity = 5;
-    this.dx = Math.max(Math.min(this.dx, maxVelocity), -maxVelocity);
+    this.dx = Math.max(Math.min(this.dx, maxVelocity), -maxVelocity); // impedir que a velocidade seja menor que -5 ou maior que 5
     this.dy = Math.max(Math.min(this.dy, maxVelocity), -maxVelocity);
 
-    const newX = this.x + this.dx;
+    const newX = this.x + this.dx; // Atualizar a posição da bola somando o valor da velocidade
     const newY = this.y + this.dy;
 
-    if (!this.checkWallCollision(newX, newY, this.lastRotatedAngle)) {
+    if (!this.checkWallCollision(newX, newY, this.lastRotatedAngle)) { // Verificar se a nova posição coincide com alguma parede antes de atualizar a posição da bola
       this.x = newX;
       this.y = newY;
     } else {
-      this.dx *= -0.4; // nivel de bounce
-      this.dy *= -0.4; // nivel de bounce
+      this.dx *= -0.4; // 0.4 é o nivel de bounce.
+      this.dy *= -0.4;
     }
 
   }
@@ -414,7 +417,9 @@ function colorCollision(r, g, b) {
 }
 
 function render() {
-
+  // angle -> angulo atual
+  // target angle -> novo angulo
+  
   let targetAngle = angle;
 
   if (isRotatingLeft) {
@@ -466,7 +471,7 @@ function GameState() {
   let currentTime = Date.now();
   let timePlayed = (currentTime - gameStartTime) / 1000
   
-  if (colorCollision(0, 128, 0) && !hasWon && timePlayed >= 3) {
+  if (colorCollision(255, 51, 102) && !hasWon && timePlayed >= 3) {
     wins +=1;
     hasWon = true;
     winsHeader.innerHTML = `Wins: ${wins}`;
@@ -475,39 +480,6 @@ function GameState() {
   } 
   
 }
-
-// Modal de vitória
-
-var modal = document.querySelector("#myModal")
-var btn = document.querySelector("#modalBtn")
-
-// Fechar modal ao clicar fora da modal
-window.addEventListener("click", (event) => {
-  
-  if ( event.target == modal ) {
-    modal.style.display = "none";
-  }
-
-})
-
-// Botão para voltar para o menu
-var leaveBTN = document.querySelector("#leaveBTN");
-leaveBTN.addEventListener("click", () => {
-  
-  window.location.href = "./Menu.html";
-
-})
-
-// Botão para voltar a jogar
-var playAgain = document.querySelector("#yesBTN");
-playAgain.addEventListener("click", () => {
-  
-  modal.style.display = "none";
-  initGame(numCols, numRows)
-
-})
-
-// Modal de vitória
 
 var gravitySlider = document.querySelector("#gravity");
 var frictionSlider = document.querySelector("#friction");
@@ -569,3 +541,27 @@ function Controls() {
 }
 
 initGame(numCols, numRows)
+
+// Modal de vitória
+var modal = document.querySelector("#myModal")
+var btn = document.querySelector("#modalBtn")
+
+// Fechar modal ao clicar fora da modal
+window.addEventListener("click", (event) => {
+  if ( event.target == modal ) {
+    modal.style.display = "none";
+  }
+})
+
+// Botão para voltar para o menu
+var leaveBTN = document.querySelector("#leaveBTN");
+leaveBTN.addEventListener("click", () => {
+  window.location.href = "./Menu.html";
+})
+
+// Botão para voltar a jogar
+var playAgain = document.querySelector("#yesBTN");
+playAgain.addEventListener("click", () => {
+  modal.style.display = "none";
+  initGame(numCols, numRows)
+})
