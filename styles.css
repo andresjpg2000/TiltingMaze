@@ -38,7 +38,15 @@ header {
 #menuTitle {
   font-size: 160px;
   margin-bottom: 4rem;
+  animation: tilt 4s infinite;
 }
+
+@keyframes tilt {
+  50% {
+    transform: rotate(9deg);
+  }
+}
+
 #numberOfWins {
   align-self: center;
   font-weight: bold;
@@ -67,9 +75,6 @@ a {
 }
 
 .options{
-  /* align-self: center; */
-  /* justify-self: center; */
-  /* height: 700px; */
   display: inline-block;
 }
 

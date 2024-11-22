@@ -42,6 +42,7 @@ if (difficulty) {
 }
 
 class Maze{
+    // Codigo retirado de https://zenith20.hashnode.dev/build-your-own-maze-generator-in-javascript
     constructor(size,rows,columns) {
         this.size = size
         this.rows = rows
@@ -120,7 +121,7 @@ class Maze{
 }
 
 class Cell{
-    
+    // Codigo retirado de https://zenith20.hashnode.dev/build-your-own-maze-generator-in-javascript
     constructor(parentSize, parentGrid, rows, cols,rowNum,colNum) {
       this.parentSize = parentSize
       this.parentGrid = parentGrid
@@ -481,9 +482,9 @@ function GameState() {
   
 }
 
-var gravitySlider = document.querySelector("#gravity");
-var frictionSlider = document.querySelector("#friction");
-var resetBTN = document.querySelector("#resetBTN");
+let gravitySlider = document.querySelector("#gravity");
+let frictionSlider = document.querySelector("#friction");
+let resetBTN = document.querySelector("#resetBTN");
 
 function updateProperties() {
 
