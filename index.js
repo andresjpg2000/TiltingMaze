@@ -9,8 +9,8 @@ let wins = 0;
 let hasWon = false;
 let isRotatingLeft = false;
 let isRotatingRight = false;
-let numCols = 3;
-let numRows = 3;
+let numCols = 4;
+let numRows = 4;
 const rotationSpeed = 0.003; // Controla a velocidade de rotação do labirinto
 let gameStartTime = Date.now();
 let maze;
@@ -36,8 +36,8 @@ if (difficulty) {
 
   }
 } else {
-    numCols = 3;
-    numRows = 3;
+    numCols = 4;
+    numRows = 4;
     options.style.display = "none";
 }
 

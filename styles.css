@@ -35,16 +35,35 @@ header {
   4px 4px 0px #FF3366, 
   6px 6px 0px #FF3366;
 }
-#menuTitle {
-  font-size: 160px;
-  margin-bottom: 4rem;
-  animation: tilt 4s infinite;
+
+#animationWrapper{
+
 }
 
+#menuTitle {
+  font-size: 128px;
+  margin-bottom: 2rem;
+  animation: tilt 4s forwards;
+}
+#recSVG {
+  position: relative;
+  right: 3.5%;
+  animation: tilt 4s forwards;
+}
+#circleSVG {
+  position: relative;
+  bottom: 10px;
+  /* animation: tilt 4s forwards; */
+} 
+
 @keyframes tilt {
-  50% {
+  100% {
     transform: rotate(9deg);
   }
+}
+
+#svgBola {
+  display: inline-block;
 }
 
 #numberOfWins {

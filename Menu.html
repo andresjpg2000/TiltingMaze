@@ -10,18 +10,31 @@
 <body class="menuBody">
 
     <div class="menuOptions">
-        <h1 class="text3D" id="menuTitle">TILTING MAZE</h1>
+        
+        <div class="animationWrapper">
+            <svg height="31" width="31" xmlns="http://www.w3.org/2000/svg" id="circleSVG">
+                <circle r="15" cx="15" cy="15" fill="#011627" />
+            </svg>
+
+            <svg width="940" height="10" xmlns="http://www.w3.org/2000/svg" id="recSVG">
+                <rect width="940" height="10" x="0" y="0" fill="white" />
+            </svg>
+    
+            <h1 class="text3D" id="menuTitle">TILTING MAZE</h1>
+        </div>
+    
         <ul>
             <li><button id="easyBTN">EASY</button></li>
             <li><button id="hardBTN">HARD</button></li>
             <li><button id="customBTN">CUSTOM</button></li>
         </ul>  
+
     </div>
 
     <script>
         var easyBTN = document.querySelector("#easyBTN")
         easyBTN.addEventListener("click", () => {
-            localStorage.setItem("mazeDifficulty", JSON.stringify({ numCols: 3, numRows: 3}))
+            localStorage.setItem("mazeDifficulty", JSON.stringify({ numCols: 4, numRows: 4}))
             window.location.href = "./Maze.html";
         })
 
