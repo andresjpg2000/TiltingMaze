@@ -36,30 +36,37 @@ header {
   6px 6px 0px #FF3366;
 }
 
-#animationWrapper{
-
-}
-
 #menuTitle {
   font-size: 128px;
   margin-bottom: 2rem;
-  animation: tilt 4s forwards;
 }
-#recSVG {
-  position: relative;
-  right: 3.5%;
-  animation: tilt 4s forwards;
-}
+
 #circleSVG {
-  position: relative;
-  bottom: 10px;
-  /* animation: tilt 4s forwards; */
+  position: absolute;
+  top: 0;
+  left: 40%;
+  animation: movingBall 3s forwards;
+  animation-delay: 1.3s;
 } 
+
+.animationWrapper {
+  animation: tilt 4s forwards;
+}
 
 @keyframes tilt {
   100% {
     transform: rotate(9deg);
   }
+}
+
+@keyframes movingBall {
+  70% {
+    transform: translateX(560px);
+  }
+  100% {
+    transform: translate(600px, calc(100vh - 175px));
+  }
+
 }
 
 #svgBola {
