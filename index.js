@@ -267,8 +267,9 @@ class Ball {
   constructor(maze, margin) {
     this.radius = maze.cols >= 8 ? 12 : 15;
     this.color = "#011627";
-    this.x = maze.cols >= 8 ?  550 - margin / 2 + this.radius + 19: 550 - margin / 2 + this.radius + 2; // posição inicial
-    this.y = maze.cols >= 8 ?  550 - margin / 2 + this.radius + 12: 550 - margin / 2 + this.radius + 2;
+    const firstCell = maze.grid[numRows-1][numCols-1]
+    this.x = firstCell.x + firstCell.size / 2 + halfMargin; // posição inicial
+    this.y = firstCell.y + firstCell.size / 2 + halfMargin;
     this.dx = 0; // velocidade no eixo x
     this.dy = 0; // velocidade no eixo y
     this.gravity = difficulty.custom ? parseFloat(gravitySlider.value) : 0.65;
@@ -457,10 +458,11 @@ function initGame(numCol, numRow) {
   Controls()
   
   maze = new Maze(400, numCol, numRow);
-  ball = new Ball(maze, margin);
-  gameStartTime = Date.now();
-
   maze.setup();
+
+  gameStartTime = Date.now();
+  ball = new Ball(maze, margin);
+  
   render();
 
 }
