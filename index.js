@@ -490,13 +490,8 @@ let resetBTN = document.querySelector("#resetBTN");
 
 function updateProperties() {
 
-  gravitySlider.addEventListener("input", () => {
-    ball.gravity = parseFloat(gravitySlider.value);
-  });
-
-  frictionSlider.addEventListener("input", () => {
-    ball.friction = parseFloat(frictionSlider.value);
-  });
+  ball.gravity = parseFloat(gravitySlider.value);
+  ball.friction = parseFloat(frictionSlider.value);
 
 }
 
@@ -528,8 +523,15 @@ function Controls() {
     }
   });
 
-  gravitySlider.addEventListener("input", updateProperties)
-  frictionSlider.addEventListener("input", updateProperties)
+  gravitySlider.addEventListener("input", () => {
+    ball.gravity = parseFloat(gravitySlider.value);
+    console.log(ball.gravity);
+    
+  });
+
+  frictionSlider.addEventListener("input", () => {
+    ball.friction = parseFloat(frictionSlider.value);
+  });
 
   resetBTN.addEventListener("click", () => {
     
@@ -567,4 +569,8 @@ var playAgain = document.querySelector("#yesBTN");
 playAgain.addEventListener("click", () => {
   modal.style.display = "none";
   initGame(numCols, numRows)
+  
+  // Manter valores das propriedades da bola entre jogos
+  ball.gravity = parseFloat(gravitySlider.value)
+  ball.friction = parseFloat(frictionSlider.value)
 })
