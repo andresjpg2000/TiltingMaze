@@ -272,8 +272,8 @@ class Ball {
     this.y = firstCell.y + firstCell.size / 2 + halfMargin;
     this.dx = 0; // velocidade no eixo x
     this.dy = 0; // velocidade no eixo y
-    this.gravity = difficulty.custom ? parseFloat(gravitySlider.value) : 0.65;
-    this.friction = difficulty.custom ? parseFloat(gravitySlider.value) : 0.65;
+    this.gravity = difficulty.custom ? parseFloat(gravitySlider.value) : 0.3;
+    this.friction = difficulty.custom ? parseFloat(gravitySlider.value) : 0.55;
     this.maze = maze;
     this.margin = margin;
     this.lastRotatedAngle = 0; // guardar angulo anterior para conseguir incrementar rotação
