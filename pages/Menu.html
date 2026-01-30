@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tilting Maze Game</title>
-    <link rel="icon" href="assets/TiltingMaze.svg">
-    <link rel="stylesheet" href="./styles.css">
-    <link rel="manifest" href="/static/manifest.json">
+    <link rel="icon" href="../assets/TiltingMaze.svg">
+    <link rel="manifest" href="../static/manifest.json">
+    <link rel="stylesheet" href="../styles.css">
 </head>
 
 <body class="menuBody">
@@ -15,7 +15,7 @@
             <svg height="31" width="31" xmlns="http://www.w3.org/2000/svg" id="circleSVG">
                 <circle r="15" cx="15" cy="15" fill="#011627" />
             </svg>
-            <img src="./assets/TiltingMaze.svg" alt="TiltingMazeTitle" id="menuTitle">
+            <img src="../assets/TiltingMaze.svg" alt="TiltingMazeTitle" id="menuTitle">
         </div>
         <ul>
             <li><button id="easyBTN">EASY</button></li>
@@ -29,7 +29,7 @@
         if ('serviceWorker' in navigator) {
 
         // Try to register the service worker file
-        navigator.serviceWorker.register('service-worker.js')
+        navigator.serviceWorker.register('/service-worker.js')
 
             // If successful, log a confirmation message in the console
             .then(() => console.log('Service Worker registered'))
@@ -43,13 +43,13 @@
         var easyBTN = document.querySelector("#easyBTN")
         easyBTN.addEventListener("click", () => {
             localStorage.setItem("mazeDifficulty", JSON.stringify({ numCols: 4, numRows: 4}))
-            window.location.href = "./Maze.html";
+            window.location.href = "/pages/Maze.html";
         })
 
         var hardBTN = document.querySelector("#hardBTN")
         hardBTN.addEventListener("click", () => {
             localStorage.setItem("mazeDifficulty", JSON.stringify({ numCols: 7, numRows: 7}))
-            window.location.href = "./Maze.html";
+            window.location.href = "/pages/Maze.html";
         })
 
         var customBTN = document.querySelector("#customBTN")
@@ -63,7 +63,7 @@
             }
 
             localStorage.setItem("mazeDifficulty", JSON.stringify({custom: true, numCols: num, numRows: num}))
-            window.location.href = "./Maze.html";
+            window.location.href = "/pages/Maze.html";
         })
 
     </script>

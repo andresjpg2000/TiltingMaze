@@ -4,8 +4,7 @@ self.addEventListener('install', event => {
     // We open (or create) a cache named 'static-v1'
     caches.open('static-v1').then(cache => {
       // We add all the important files that we want to cache for offline use
-      return cache.addAll([
-        '/',                      
+      return cache.addAll([                     
         '/pages/Menu.html',
         '/pages/Maze.html',
         '/pages/offline.html',     
