@@ -8,23 +8,18 @@
 </head>
 
 <body class="menuBody">
-
     <div class="menuOptions">
-        
         <div class="animationWrapper">
             <svg height="31" width="31" xmlns="http://www.w3.org/2000/svg" id="circleSVG">
                 <circle r="15" cx="15" cy="15" fill="#011627" />
             </svg>
-            
-             <img src="./TiltingMaze.svg" alt="TiltingMazeTitle" id="menuTitle">
+            <img src="./assets/TiltingMaze.svg" alt="TiltingMazeTitle" id="menuTitle">
         </div>
-    
         <ul>
             <li><button id="easyBTN">EASY</button></li>
             <li><button id="hardBTN">HARD</button></li>
             <li><button id="customBTN">CUSTOM</button></li>
-        </ul>  
-
+        </ul> 
     </div>
 
     <script>
@@ -53,6 +48,7 @@
             localStorage.setItem("mazeDifficulty", JSON.stringify({custom: true, numCols: num, numRows: num}))
             window.location.href = "./Maze.html";
         })
+
     </script>
 </body>
 

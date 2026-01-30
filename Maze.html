@@ -11,33 +11,12 @@
         <canvas id="myCanvas"></canvas>
 
         <header>
-
             <div class="wrapper">
-                
                 <h1 class="text3D">TILTING MAZE</h1>
                 <h3 class="text3D" id="numberOfWins">WINS:</h3>
-
-                <div class="options">
-                    
-                    <h2 style="font-size: 24px;margin-top: 1rem;">Ball properties</h2>
-                    
-                    <label for="gravity">Gravity</label>
-                    <input type="range" min="0" max="2" value="0.65" step="0.01" title="Adjust the gravity effect (0-2)" class="slider" id="gravity">
-
-                    <br>
-
-                    <label for="friction">Friction</label>
-                    <input type="range" min="0" max="2" value="0.65" step="0.01" title="Adjust the friction effect (0-2)" class="slider" id="friction">
-
-                    <button id="resetBTN">Reset properties</button>
-
-                </div>
-
             </div>
         </header>
         
-       
-
     </div>
     
     <div class="text3D" id="backToMenu">
@@ -58,6 +37,7 @@
 
     </div>
 
-    <script type="module" src="index.js"></script>
+    <script src="./node_modules/matter-js/build/matter.min.js"></script>
+    <script type="module" src="main.js"></script>
 </body>
 </html>
