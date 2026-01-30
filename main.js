@@ -1,4 +1,3 @@
-// main.js
 import { GameController } from './controllers/GameController.js';
 
 const canvas = document.querySelector("#myCanvas");
