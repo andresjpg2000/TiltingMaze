@@ -39,7 +39,7 @@ export class GameController {
 
   init(numCols, numRows) {
     this.gameState.resetWinState();
-    this.inputController.attachKeyboardListeners();
+    this.inputController.attachListeners();
 
     if (this.animationId) {
       cancelAnimationFrame(this.animationId);
@@ -68,7 +68,12 @@ export class GameController {
 
   gameLoop() {
     const input = this.inputController.getCurrentRotationInput();
-    this.gameState.updateRotation(input.left, input.right);
+    
+    // Compute rotation input: keyboard has priority, gyro tilt used when no keys pressed
+    const keyboardInput = input.left ? -1 : input.right ? 1 : 0;
+    const rotationInput = keyboardInput !== 0 ? keyboardInput : input.tilt;
+    
+    this.gameState.updateRotation(rotationInput);
     const targetAngle = this.gameState.getTargetAngle();
     this.gameState.setAngle(targetAngle);
 

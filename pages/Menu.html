@@ -21,8 +21,32 @@
             <li><button id="easyBTN">EASY</button></li>
             <li><button id="hardBTN">HARD</button></li>
             <li><button id="customBTN">CUSTOM</button></li>
+            <li><button id="gyroBTN" style="display: none;">ENABLE GYROSCOPE</button></li>
         </ul> 
     </div>
+
+    <script>
+        // Show gyroscope button only on iOS devices that require permission
+        if (typeof DeviceOrientationEvent !== 'undefined' && 
+            typeof DeviceOrientationEvent.requestPermission === 'function') {
+            document.getElementById('gyroBTN').style.display = 'block';
+        }
+        
+        document.getElementById('gyroBTN').addEventListener('click', async () => {
+            try {
+                const permission = await DeviceOrientationEvent.requestPermission();
+                if (permission === 'granted') {
+                    document.getElementById('gyroBTN').textContent = 'GYROSCOPE ENABLED ✓';
+                    document.getElementById('gyroBTN').disabled = true;
+                } else {
+                    alert('Gyroscope permission denied. You can still use keyboard controls.');
+                }
+            } catch (error) {
+                console.error('Gyroscope permission error:', error);
+                alert('Failed to request gyroscope permission.');
+            }
+        });
+    </script>
 
     <script>
         // Check if the browser supports service workers
@@ -55,7 +79,7 @@
         var customBTN = document.querySelector("#customBTN")
         customBTN.addEventListener("click", () => {
             
-            num = prompt("How many rows/columns do you want the maze to have? (3-10)")
+            num = parseInt(prompt("How many rows/columns do you want the maze to have? (3-10)"), 10);
 
             if (num < 3 || num > 10) {
                 alert("The number of rows/columns should be a number between 3-10")

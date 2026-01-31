@@ -4,8 +4,7 @@ export class GameStateModel {
     this.hasWon = false;
     this.gameStartTime = Date.now();
     this.angle = 0;
-    this.isRotatingLeft = false;
-    this.isRotatingRight = false;
+    this.rotationInput = 0; // Scalar in [-1, 1] for rotation control
     this.numCols = 4;
     this.numRows = 4;
     this.rotationSpeed = 0.012;
@@ -13,7 +12,7 @@ export class GameStateModel {
   }
 
   loadDifficulty() {
-    const difficulty = JSON.parse(localStorage.getItem("mazeDifficulty"));
+    const difficulty = JSON.parse(localStorage.getItem('mazeDifficulty'));
     if (difficulty) {
       this.numCols = difficulty.numCols;
       this.numRows = difficulty.numRows;
@@ -40,20 +39,16 @@ export class GameStateModel {
     return (Date.now() - this.gameStartTime) / 1000;
   }
 
-  updateRotation(left, right) {
-    this.isRotatingLeft = left;
-    this.isRotatingRight = right;
+  updateRotation(rotationInput) {
+    // rotationInput is a scalar in [-1, 1]
+    // -1 = full left rotation, 0 = no rotation, 1 = full right rotation
+    this.rotationInput = rotationInput;
   }
 
   getTargetAngle() {
-    let targetAngle = this.angle;
-    if (this.isRotatingLeft) {
-      targetAngle -= this.rotationSpeed;
-    }
-    if (this.isRotatingRight) {
-      targetAngle += this.rotationSpeed;
-    }
-    return targetAngle;
+    // Apply rotation based on the scalar input
+    // rotationInput scales the rotation speed for analog control
+    return this.angle + (this.rotationInput || 0) * this.rotationSpeed;
   }
 
   setAngle(angle) {
