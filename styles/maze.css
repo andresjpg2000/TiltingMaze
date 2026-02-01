@@ -1,0 +1,182 @@
+/* Header */
+#mazeLayout {
+  padding: 0;
+}
+
+#mazeHeader {
+  position: absolute;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Canvas */
+#myCanvas {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1; 
+  border-radius: 8px;
+  box-sizing: border-box;
+  object-fit: contain;
+}
+
+/* Game UI elements */
+#numberOfWins {
+  align-self: center;
+  font-weight: bold;
+  color: azure;
+}
+
+/* Back to menu link */
+.backToMenu {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  font-size: 2.5rem;
+  line-height: 0.5;
+  color: #FF3366;
+  text-shadow: 2px 2px 0px azure;
+  text-decoration: none;
+}
+
+.backToMenu:hover,
+.backToMenu:focus {
+  transform: translateY(-2px);
+}
+
+/* Victory Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 10;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.8);
+  text-align: center;
+}
+
+.modal-content {
+  position: relative;
+  margin: 15% auto;
+  padding: 2rem 1.5rem;
+  border-radius: 12px;
+  box-sizing: border-box;
+}
+
+#winTitle {
+  font-size: clamp(32px, 5vw, 64px);
+  text-align: center;
+}
+
+#btnWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+/* Close (if you use it somewhere) */
+.close {
+  color: azure;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Play again button */
+#yesBTN {
+  background-color: #2EC4B6;
+  margin-right: 0;
+}
+
+#yesBTN:hover {
+  background-color: #fff;
+  color: #2EC4B6;
+  border: 2px solid hsl(174, 62%, 47%);
+  box-shadow: 5px 5px 0px #2EC4B6;
+}
+
+#yesBTN:active {
+  background-color: #fff;
+  color: #2EC4B6;
+  box-shadow: none;
+  transform: translateY(4px);
+}
+
+/* Other elements (if used elsewhere) */
+.slider {
+  width: 100%;
+}
+
+label {
+  color: azure;
+  width: 100px;
+  font-size: 16px;
+}
+
+#resetBTN {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+#title {
+  margin-bottom: 4rem;
+}
+
+/* Larger screens: put header and canvas side-by-side */
+@media (min-width: 900px) {
+
+  #myCanvas {
+    grid-row: 1;
+    grid-column: 2;
+    max-height: 75vh;
+  }
+
+  .backToMenu {
+    align-self: flex-end;
+  }
+}
+
+@media (max-width: 899px) and (min-width: 481px) {
+
+  .text3D {
+    font-size: clamp(2px, 4vw, 40px);
+  }
+
+}
+
+/* Very small devices */
+@media (max-width: 480px) {
+  .mazeLayout {
+    padding: 0.75rem;
+  }
+
+  .text3D {
+    font-size: 24px;
+  }
+
+  .modal-content {
+    margin: 20% 1rem;
+    padding: 1.5rem 1.25rem;
+  }
+
+  #winTitle {
+    font-size: 24px;
+  }
+
+  #btnWrapper {
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+}

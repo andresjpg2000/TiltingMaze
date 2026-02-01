@@ -1,6 +1,6 @@
 export class UIView {
   constructor() {
-    this.winsHeader = document.querySelector("#numberOfWins");
+    this.winsHeader = document.querySelector("#winTitle");
     this.modal = document.querySelector("#myModal");
     this.header = document.querySelector("header");
     this.playAgainBtn = document.querySelector("#yesBTN");
@@ -8,7 +8,7 @@ export class UIView {
   }
 
   updateWinCounter(wins) {
-    this.winsHeader.innerHTML = `Wins: ${wins}`;
+    this.winsHeader.innerHTML = `Congratulations, you won ${wins} time${wins !== 1 ? 's' : ''}!`;
   }
 
   showModal() {

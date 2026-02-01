@@ -1,0 +1,65 @@
+/* Base body styles */
+body {
+  background-color: #2ec4b6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  overflow: hidden;
+  margin: 0 1rem 0 1rem;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-size: 32px;
+}
+
+/* Typography */
+h1, h2, h3 {
+  color: azure;
+  margin: 0;
+}
+
+/* Links */
+a {
+  text-decoration: none;
+  color: #FF3366;
+}
+
+/* 3D text effect */
+.text3D {
+  font-size: 48px;
+  font-weight: bold;
+  position: relative;
+  text-shadow: 
+    2px 2px 0px #FF3366, 
+    4px 4px 0px #FF3366, 
+    6px 6px 0px #FF3366;
+}
+
+/* Button base styles */
+button {
+  display: inline-block;
+  width: 18rem;
+  height: 4rem;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  color: #fff;
+  background-color: #FF3366;
+  border: 2px solid #000;
+  border-radius: 10px;
+  box-shadow: 5px 5px 0px #000;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #fff;
+  color: #FF3366;
+  border: 2px solid #FF3366;
+  box-shadow: 5px 5px 0px #FF3366;
+}
+
+button:active {
+  box-shadow: none;
+  transform: translateY(4px);
+}

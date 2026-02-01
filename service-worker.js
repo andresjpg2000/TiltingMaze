@@ -8,10 +8,12 @@ self.addEventListener('install', event => {
         '/pages/Menu.html',
         '/pages/Maze.html',
         '/pages/offline.html',     
-        '/styles.css',             
+        '/styles/global.css',
+        '/styles/menu.css',
+        '/styles/maze.css',             
         '/assets/TiltingMaze.svg',
-        '/main.js',
-        '/node_modules/matter-js/build/matter.min.js',
+        '/libs/matter.min.js',
+        '/main.js'
       ]);
     })
   );
@@ -20,13 +22,19 @@ self.addEventListener('install', event => {
 // This event runs every time a request is made (HTML, CSS, image, etc.)
 self.addEventListener('fetch', event => {
   event.respondWith(
-    // First, try to find the request in the cache
     caches.match(event.request).then(cached => {
-      // If found, return it from the cache
-      // If not, try to fetch it from the network
-      // If that fails (e.g., offline), show the offline page
-      return cached || fetch(event.request)
+      if (cached) return cached;
+
+      return fetch(event.request)
+        .then(response => {
+          const responseClone = response.clone();
+          caches.open('static-v1').then(cache => {
+            cache.put(event.request, responseClone);
+          });
+          return response;
+        })
         .catch(() => caches.match('/pages/offline.html'));
     })
   );
 });
+

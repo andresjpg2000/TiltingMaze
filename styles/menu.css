@@ -1,0 +1,120 @@
+/* Menu page background pattern */
+.menuBody {
+  background-color: #2ec4b6;
+  background-image: url("data:image/svg+xml,%3Csvg width='32' height='64' viewBox='0 0 32 64' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 28h20V16h-4v8H4V4h28v28h-4V8H8v12h4v-8h12v20H0v-4zm12 8h20v4H16v24H0v-4h12V36zm16 12h-4v12h8v4H20V44h12v12h-4v-8zM0 36h8v20H0v-4h4V40H0v-4z' fill='%23011627' fill-opacity='0.33' fill-rule='evenodd'/%3E%3C/svg%3E");
+}
+
+/* Menu layout */
+.menuOptions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  min-height: 100vh;
+  padding: 1.5rem;
+}
+
+/* Prevent body flex from squashing content on small screens */
+@media (max-width: 768px) {
+  body.menuBody {
+    margin: 0;
+    font-size: 20px;
+  }
+}
+
+/* Logo + animation container */
+.animationWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: tilt 4s forwards;
+}
+
+/* Menu title – responsive SVG image */
+#menuTitle {
+  display: block;
+  width: 100%;
+  max-width: 952px;
+  height: auto;
+}
+
+/* Animated SVG circle */
+#circleSVG {
+  position: absolute;
+  top: 0;
+  left: 10%;
+  width: 32px;
+  height: 32px;
+  animation: movingBall 3s forwards;
+  animation-delay: 1.3s;
+}
+
+/* Menu list */
+.menuList {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  max-width: 320px;
+}
+
+.menuList li {
+  margin-bottom: 1.5rem;
+}
+
+/* Make buttons responsive */
+.menuList button {
+  max-width: 100%;
+}
+
+/* Gyro button visibility controlled by class */
+.gyroButton {
+  display: none;
+}
+
+.gyroButton.gyro-visible {
+  display: inline-block;
+}
+
+/* Animations */
+@keyframes tilt {
+  100% {
+    transform: rotate(9deg);
+  }
+}
+
+/* Use percentages instead of fixed px so it scales */
+@keyframes movingBall {
+  70% {
+    transform: translateX(60vw);
+  }
+  100% {
+    transform: translate(65vw, 50vh);
+  }
+}
+
+/* Larger screens – give more breathing space */
+@media (min-width: 1024px) {
+  .menuOptions {
+    padding: 2rem 4rem;
+  }
+
+  .menuList {
+    max-width: 360px;
+  }
+}
+
+/* Very small devices */
+@media (max-width: 480px) {
+  .animationWrapper {
+    margin-bottom: 2rem;
+  }
+
+  .menuList li {
+    margin-bottom: 1.2rem;
+  }
+}

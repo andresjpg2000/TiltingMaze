@@ -3,41 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tilting Maze Game</title>
+    <title>Tilting Maze – Play the Tilting Maze Game</title>
+    <meta name="description" content="Play Tilting Maze, a physics-based maze game where you tilt the board to guide the ball to the goal. Choose easy, hard or custom difficulty.">
     <link rel="icon" href="../assets/TiltingMaze.svg">
     <link rel="manifest" href="../static/manifest.json">
-    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../styles/global.css">
+    <link rel="stylesheet" href="../styles/menu.css">
 </head>
 
 <body class="menuBody">
-    <div class="menuOptions">
-        <div class="animationWrapper">
-            <svg height="31" width="31" xmlns="http://www.w3.org/2000/svg" id="circleSVG">
+    <main class="menuOptions">
+        <div class="animationWrapper" aria-label="Tilting Maze logo animation">
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                id="circleSVG"
+                role="img"
+                aria-hidden="true"
+                viewBox="0 0 31 31">
                 <circle r="15" cx="15" cy="15" fill="#011627" />
             </svg>
-            <img src="../assets/TiltingMaze.svg" alt="TiltingMazeTitle" id="menuTitle">
+
+            <img
+                src="../assets/TiltingMaze.svg"
+                alt="Tilting Maze game logo"
+                id="menuTitle"
+                width="952"
+                height="279"
+                loading="lazy"
+            >
         </div>
-        <ul>
-            <li><button id="easyBTN">EASY</button></li>
-            <li><button id="hardBTN">HARD</button></li>
-            <li><button id="customBTN">CUSTOM</button></li>
-            <li><button id="gyroBTN" style="display: none;">ENABLE GYROSCOPE</button></li>
-        </ul> 
-    </div>
+
+        <nav aria-label="Game difficulty selection">
+            <ul class="menuList">
+                <li><button id="easyBTN">EASY</button></li>
+                <li><button id="hardBTN">HARD</button></li>
+                <li><button id="customBTN">CUSTOM</button></li>
+                <li><button id="gyroBTN" class="gyroButton">ENABLE GYROSCOPE</button></li>
+            </ul>
+        </nav>
+    </main>
 
     <script>
         // Show gyroscope button only on iOS devices that require permission
-        if (typeof DeviceOrientationEvent !== 'undefined' && 
+        const gyroBTN = document.getElementById('gyroBTN');
+
+        if (typeof DeviceOrientationEvent !== 'undefined' &&
             typeof DeviceOrientationEvent.requestPermission === 'function') {
-            document.getElementById('gyroBTN').style.display = 'block';
+            gyroBTN.classList.add('gyro-visible');
         }
-        
-        document.getElementById('gyroBTN').addEventListener('click', async () => {
+
+        gyroBTN.addEventListener('click', async () => {
             try {
                 const permission = await DeviceOrientationEvent.requestPermission();
                 if (permission === 'granted') {
-                    document.getElementById('gyroBTN').textContent = 'GYROSCOPE ENABLED ✓';
-                    document.getElementById('gyroBTN').disabled = true;
+                    gyroBTN.textContent = 'GYROSCOPE ENABLED ✓';
+                    gyroBTN.disabled = true;
                 } else {
                     alert('Gyroscope permission denied. You can still use keyboard controls.');
                 }
@@ -48,49 +68,40 @@
         });
     </script>
 
-    <script>
+    <!-- <script>
         // Check if the browser supports service workers
         if ('serviceWorker' in navigator) {
-
-        // Try to register the service worker file
-        navigator.serviceWorker.register('/service-worker.js')
-
-            // If successful, log a confirmation message in the console
-            .then(() => console.log('Service Worker registered'))
-
-            // If there's an error, log it in the console
-            .catch(err => console.error('SW registration failed', err));
+            navigator.serviceWorker.register('/service-worker.js')
+                .then(() => console.log('Service Worker registered'))
+                .catch(err => console.error('SW registration failed', err));
         }
-    </script>
+    </script> -->
 
     <script>
-        var easyBTN = document.querySelector("#easyBTN")
+        const easyBTN = document.querySelector("#easyBTN");
         easyBTN.addEventListener("click", () => {
-            localStorage.setItem("mazeDifficulty", JSON.stringify({ numCols: 4, numRows: 4}))
+            localStorage.setItem("mazeDifficulty", JSON.stringify({ numCols: 4, numRows: 4 }));
             window.location.href = "/pages/Maze.html";
-        })
+        });
 
-        var hardBTN = document.querySelector("#hardBTN")
+        const hardBTN = document.querySelector("#hardBTN");
         hardBTN.addEventListener("click", () => {
-            localStorage.setItem("mazeDifficulty", JSON.stringify({ numCols: 7, numRows: 7}))
+            localStorage.setItem("mazeDifficulty", JSON.stringify({ numCols: 7, numRows: 7 }));
             window.location.href = "/pages/Maze.html";
-        })
+        });
 
-        var customBTN = document.querySelector("#customBTN")
+        const customBTN = document.querySelector("#customBTN");
         customBTN.addEventListener("click", () => {
-            
-            num = parseInt(prompt("How many rows/columns do you want the maze to have? (3-10)"), 10);
+            const num = parseInt(prompt("How many rows/columns do you want the maze to have? (3-10)"), 10);
 
-            if (num < 3 || num > 10) {
-                alert("The number of rows/columns should be a number between 3-10")
+            if (Number.isNaN(num) || num < 3 || num > 10) {
+                alert("The number of rows/columns should be a number between 3-10");
                 return;
             }
 
-            localStorage.setItem("mazeDifficulty", JSON.stringify({custom: true, numCols: num, numRows: num}))
+            localStorage.setItem("mazeDifficulty", JSON.stringify({ custom: true, numCols: num, numRows: num }));
             window.location.href = "/pages/Maze.html";
-        })
-
+        });
     </script>
 </body>
-
 </html>
