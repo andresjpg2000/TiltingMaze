@@ -13,7 +13,7 @@
 /* Canvas */
 #myCanvas {
   width: 100%;
-  height: auto;
+  height: 60vh;
   aspect-ratio: 1 / 1; 
   border-radius: 8px;
   box-sizing: border-box;
@@ -35,7 +35,7 @@
   font-size: 2.5rem;
   line-height: 0.5;
   color: #FF3366;
-  text-shadow: 2px 2px 0px azure;
+  text-shadow: 1px 1px 0px azure;
   text-decoration: none;
 }
 
@@ -143,9 +143,6 @@ label {
     max-height: 75vh;
   }
 
-  .backToMenu {
-    align-self: flex-end;
-  }
 }
 
 @media (max-width: 899px) and (min-width: 481px) {
@@ -154,10 +151,118 @@ label {
     font-size: clamp(2px, 4vw, 40px);
   }
 
+  .backToMenu, 
+  .backToMenu:hover,
+  .backToMenu:focus {
+    transform: scale(1.5);
+  }
+
+}
+
+/* ===== Mobile Touch Controls ===== */
+#touchControls {
+  display: none; /* Hidden by default on desktop */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  padding: 1rem;
+  justify-content: space-between;
+  pointer-events: none; /* Allow clicks to pass through container */
+}
+
+.touchArrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(60px, 15vw, 100px);
+  height: clamp(60px, 15vw, 100px);
+  padding: 0;
+  border-radius: 50%;
+  background-color: rgba(255, 51, 102, 0.9);
+  border: 3px solid #fff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  color: #fff;
+  cursor: pointer;
+  pointer-events: auto; /* Re-enable clicks on buttons */
+  touch-action: manipulation; /* Prevent zoom on double-tap */
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.1s ease, background-color 0.1s ease;
+}
+
+.touchArrow svg {
+  width: 60%;
+  height: 60%;
+}
+
+.touchArrow:active,
+.touchArrow.pressed {
+  background-color: #fff;
+  color: #FF3366;
+  transform: scale(0.95);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Show touch controls on touch-capable devices */
+@media (hover: none) and (pointer: coarse) {
+  #touchControls {
+    display: flex;
+  }
+}
+
+/* Portrait mode on mobile/tablet */
+@media (max-width: 899px) and (orientation: portrait) {
+  #touchControls {
+    display: flex;
+    padding: 1.5rem 2rem;
+  }
+
+  .touchArrow {
+    width: clamp(70px, 18vw, 110px);
+    height: clamp(70px, 18vw, 110px);
+  }
+}
+
+/* Landscape mode on mobile/tablet */
+@media (max-height: 500px) and (orientation: landscape) {
+  #touchControls {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    top: 50%;
+    bottom: auto;
+    left: 1rem;
+    right: 1rem;
+    transform: translateY(-50%);
+    padding: 0 1rem;
+  }
+
+  .touchArrow {
+    width: clamp(50px, 12vh, 80px);
+    height: clamp(50px, 12vh, 80px);
+  }
+}
+
+/* Also show on tablets in both orientations */
+@media (min-width: 481px) and (max-width: 1024px) and (hover: none) {
+  #touchControls {
+    display: flex;
+  }
 }
 
 /* Very small devices */
 @media (max-width: 480px) {
+
+  .backToMenu, 
+  .backToMenu:hover,
+  .backToMenu:focus {
+    transform: scale(2);
+  }
+
   .mazeLayout {
     padding: 0.75rem;
   }
@@ -178,5 +283,14 @@ label {
   #btnWrapper {
     gap: 1.5rem;
     margin-top: 2rem;
+  }
+
+  #touchControls {
+    padding: 1rem 1.5rem;
+  }
+
+  .touchArrow {
+    width: 65px;
+    height: 65px;
   }
 }

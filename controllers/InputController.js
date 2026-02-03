@@ -22,6 +22,16 @@ export class InputController {
     // this.orientationHandler = this.handleOrientation.bind(this);
     // this.mouseMoveHandler = this.handleMouseMove.bind(this);
 
+    // Touch button handlers
+    this.leftBtnStart = this.handleLeftBtnStart.bind(this);
+    this.leftBtnEnd = this.handleLeftBtnEnd.bind(this);
+    this.rightBtnStart = this.handleRightBtnStart.bind(this);
+    this.rightBtnEnd = this.handleRightBtnEnd.bind(this);
+
+    // Button references
+    this.leftArrowBtn = null;
+    this.rightArrowBtn = null;
+
     InputController.instance = this;
   }
 
@@ -35,8 +45,60 @@ export class InputController {
     
     // Gyroscope listener (non-iOS or already granted permission)
     // this.attachGyroscopeListener();
+
+    // Touch button listeners
+    this.attachTouchButtonListeners();
   
     this.listenersAttached = true;
+  }
+
+  attachTouchButtonListeners() {
+    this.leftArrowBtn = document.getElementById('leftArrowBtn');
+    this.rightArrowBtn = document.getElementById('rightArrowBtn');
+
+    if (this.leftArrowBtn) {
+      // Touch events
+      this.leftArrowBtn.addEventListener('touchstart', this.leftBtnStart, { passive: true });
+      this.leftArrowBtn.addEventListener('touchend', this.leftBtnEnd, { passive: true });
+      this.leftArrowBtn.addEventListener('touchcancel', this.leftBtnEnd, { passive: true });
+      // Mouse events (for testing on desktop)
+      this.leftArrowBtn.addEventListener('mousedown', this.leftBtnStart);
+      this.leftArrowBtn.addEventListener('mouseup', this.leftBtnEnd);
+      this.leftArrowBtn.addEventListener('mouseleave', this.leftBtnEnd);
+    }
+
+    if (this.rightArrowBtn) {
+      // Touch events
+      this.rightArrowBtn.addEventListener('touchstart', this.rightBtnStart, { passive: true });
+      this.rightArrowBtn.addEventListener('touchend', this.rightBtnEnd, { passive: true });
+      this.rightArrowBtn.addEventListener('touchcancel', this.rightBtnEnd, { passive: true });
+      // Mouse events (for testing on desktop)
+      this.rightArrowBtn.addEventListener('mousedown', this.rightBtnStart);
+      this.rightArrowBtn.addEventListener('mouseup', this.rightBtnEnd);
+      this.rightArrowBtn.addEventListener('mouseleave', this.rightBtnEnd);
+    }
+  }
+
+  handleLeftBtnStart(e) {
+    e.preventDefault?.();
+    this.keyState.left = true;
+    this.leftArrowBtn?.classList.add('pressed');
+  }
+
+  handleLeftBtnEnd(e) {
+    this.keyState.left = false;
+    this.leftArrowBtn?.classList.remove('pressed');
+  }
+
+  handleRightBtnStart(e) {
+    e.preventDefault?.();
+    this.keyState.right = true;
+    this.rightArrowBtn?.classList.add('pressed');
+  }
+
+  handleRightBtnEnd(e) {
+    this.keyState.right = false;
+    this.rightArrowBtn?.classList.remove('pressed');
   }
 
   // attachGyroscopeListener() {
@@ -153,9 +215,36 @@ export class InputController {
     //   window.removeEventListener('deviceorientation', this.orientationHandler);
     //   this.gyroscopeEnabled = false;
     // }
+
+    // Remove touch button listeners
+    this.detachTouchButtonListeners();
+
     this.listenersAttached = false;
     this.keyState = { left: false, right: false };
     // this.tiltValue = 0;
+  }
+
+  detachTouchButtonListeners() {
+    if (this.leftArrowBtn) {
+      this.leftArrowBtn.removeEventListener('touchstart', this.leftBtnStart);
+      this.leftArrowBtn.removeEventListener('touchend', this.leftBtnEnd);
+      this.leftArrowBtn.removeEventListener('touchcancel', this.leftBtnEnd);
+      this.leftArrowBtn.removeEventListener('mousedown', this.leftBtnStart);
+      this.leftArrowBtn.removeEventListener('mouseup', this.leftBtnEnd);
+      this.leftArrowBtn.removeEventListener('mouseleave', this.leftBtnEnd);
+    }
+
+    if (this.rightArrowBtn) {
+      this.rightArrowBtn.removeEventListener('touchstart', this.rightBtnStart);
+      this.rightArrowBtn.removeEventListener('touchend', this.rightBtnEnd);
+      this.rightArrowBtn.removeEventListener('touchcancel', this.rightBtnEnd);
+      this.rightArrowBtn.removeEventListener('mousedown', this.rightBtnStart);
+      this.rightArrowBtn.removeEventListener('mouseup', this.rightBtnEnd);
+      this.rightArrowBtn.removeEventListener('mouseleave', this.rightBtnEnd);
+    }
+
+    this.leftArrowBtn = null;
+    this.rightArrowBtn = null;
   }
 
   // isGyroscopeAvailable() {

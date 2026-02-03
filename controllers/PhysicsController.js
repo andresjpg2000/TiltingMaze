@@ -58,7 +58,7 @@ export class PhysicsController {
       restitution: ballModel.restitution,
       friction: 0.1,
       frictionAir: 1 - ballModel.friction,
-      density: 0.001,
+      density: 1,
       label: 'ball'
     });
 
