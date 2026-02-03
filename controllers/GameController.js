@@ -95,7 +95,7 @@ export class GameController {
     
     const timePlayed = this.gameState.getTimePlayed();
     
-    if (this.physicsController.isInTargetZone && timePlayed >= 3) {
+    if (this.physicsController.isInTargetZone && timePlayed >= 2) {
       this.gameState.markWon();
       this.gameState.incrementWins();
       this.uiView.updateWinCounter(this.gameState.wins);

@@ -33,6 +33,8 @@ export class GameStateModel {
   resetWinState() {
     this.hasWon = false;
     this.gameStartTime = Date.now();
+    this.angle = 0;
+    this.rotationInput = 0;
   }
 
   getTimePlayed() {
