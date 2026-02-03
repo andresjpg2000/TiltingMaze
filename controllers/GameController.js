@@ -71,7 +71,8 @@ export class GameController {
     
     // Compute rotation input: keyboard has priority, gyro tilt used when no keys pressed
     const keyboardInput = input.left ? -1 : input.right ? 1 : 0;
-    const rotationInput = keyboardInput !== 0 ? keyboardInput : input.tilt;
+    // const rotationInput = keyboardInput !== 0 ? keyboardInput : input.tilt;
+    const rotationInput = keyboardInput !== 0 ? keyboardInput : 0;
     
     this.gameState.updateRotation(rotationInput);
     const targetAngle = this.gameState.getTargetAngle();
