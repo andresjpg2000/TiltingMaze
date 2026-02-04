@@ -15,20 +15,22 @@ export class GameController {
     this.inputController = new InputController();
     this.physicsController = null;
     this.animationId = null;
+    this.isPlaying = false;
 
     this.setupUI();
+
+  }
+
+  get timePlayed() {
+    return this.gameState.getTimePlayed();
   }
 
   setupUI() {
     this.uiView.adjustLayoutForDifficulty(this.gameState.isCustomMode);
-    
-    this.uiView.attachModalClickOutside(() => {
-      this.uiView.hideModal();
-    });
 
     this.uiView.attachPlayAgainListener(() => {
       this.uiView.hideModal();
-      this.init(this.gameState.numCols, this.gameState.numRows);
+      this.start();
     });
 
     this.uiView.attachLeaveListener(() => {
@@ -67,6 +69,10 @@ export class GameController {
   }
 
   gameLoop() {
+    if (!this.isPlaying) return;
+
+    this.uiView.updateTimer(this.timePlayed);
+
     const input = this.inputController.getCurrentRotationInput();
     
     // Compute rotation input: keyboard has priority, gyro tilt used when no keys pressed
@@ -94,18 +100,29 @@ export class GameController {
   checkWinCondition() {
     if (this.gameState.hasWon) return;
     
-    const timePlayed = this.gameState.getTimePlayed();
-    
-    if (this.physicsController.isInTargetZone && timePlayed >= 2) {
-      this.gameState.markWon();
-      this.gameState.incrementWins();
-      this.uiView.updateWinCounter(this.gameState.wins);
-      this.uiView.showModal();
-      cancelAnimationFrame(this.animationId);
+    if (this.physicsController.isInTargetZone && this.timePlayed >= 2) {
+      this.endGame();
     }
   }
 
+  endGameLoop() {
+    if (this.animationId) {
+      cancelAnimationFrame(this.animationId);
+      this.animationId = null;
+    }
+  }
+
+  endGame() {
+    this.gameState.markWon();
+    this.gameState.incrementWins();
+    this.uiView.updateWinCounter(this.gameState.wins);
+    this.isPlaying = false;
+    this.uiView.showModal();
+    this.endGameLoop();
+  }
+
   start() {
+    this.isPlaying = true;
     this.init(this.gameState.numCols, this.gameState.numRows);
   }
 }

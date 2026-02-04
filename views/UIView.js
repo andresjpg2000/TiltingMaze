@@ -11,6 +11,11 @@ export class UIView {
     this.winsHeader.innerHTML = `Congratulations, you won ${wins} time${wins !== 1 ? 's' : ''}!`;
   }
 
+  updateTimer(timePlayed) {
+    const timerElement = document.querySelector("#timer");
+    timerElement.innerHTML = `${timePlayed.toFixed(2)}s`;
+  }
+
   showModal() {
     this.modal.style.display = "block";
   }
@@ -27,13 +32,13 @@ export class UIView {
     }
   }
 
-  attachModalClickOutside(callback) {
-    window.addEventListener("click", (event) => {
-      if (event.target === this.modal) {
-        callback();
-      }
-    });
-  }
+  // attachModalClickOutside(callback) {
+  //   window.addEventListener("click", (event) => {
+  //     if (event.target === this.modal) {
+  //       callback();
+  //     }
+  //   });
+  // }
 
   attachPlayAgainListener(callback) {
     this.playAgainBtn.addEventListener("click", callback);

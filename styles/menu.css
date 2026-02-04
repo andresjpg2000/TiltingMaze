@@ -32,6 +32,7 @@
   align-items: center;
   justify-content: center;
   animation: tilt 4s forwards;
+  container-type: inline-size; /* Enable container queries for cqw units */
 }
 
 /* Menu title – responsive SVG image */
@@ -42,15 +43,21 @@
   height: auto;
 }
 
+#ballWrapper {
+  animation: tiltAndBack 4s forwards;
+}
+
 /* Animated SVG circle */
 #circleSVG {
   position: absolute;
   top: 0;
-  left: 10%;
-  width: 32px;
-  height: 32px;
-  animation: movingBall 3s forwards;
-  animation-delay: 1.3s;
+  left: 5%;
+  width: 30px;
+  height: 30px;
+  transform-origin: center;
+  transform: translateY(-100vh); /* Start off-screen above */
+  animation: movingBall 4s ease-in-out forwards;
+  animation-delay: 0.5s;
 }
 
 /* Menu list */
@@ -87,13 +94,74 @@
   }
 }
 
-/* Use percentages instead of fixed px so it scales */
-@keyframes movingBall {
-  70% {
-    transform: translateX(60vw);
+@keyframes tiltAndBack {
+  0% {
+    transform: rotate(-9deg);
+  }
+  25% {
+    transform: rotate(-9deg);
+  }
+  30% {
+    transform: rotate(9deg);
+  }
+  81% {
+    transform: rotate(-9deg);
   }
   100% {
-    transform: translate(65vw, 50vh);
+    transform: rotate(-9deg);
+  }
+}
+
+/* Use percentages instead of fixed px so it scales */
+@keyframes movingBall {
+  0% {
+    /* Ball starts off-screen above */
+    transform: translateY(-100vh);
+  }
+  25% {
+    /* Ball drops down and "hits" the top of the title */
+    transform: translateY(calc(0cqh - 40px));
+  }
+  30% {
+    /* Small bounce effect on impact */
+    transform: translateY(calc(0cqh - 50px));
+  }
+  35% {
+    /* Settles on top of the title */
+    transform: translateY(calc(0cqh - 40px));
+  }
+  80% {
+    /* Ball slides across the title, then falls straight down */
+    transform: translateX(calc(100cqw + 16px)) translateY(0);
+  }
+  100% {
+    
+    transform: translateX(calc(100cqw + 16px)) translateY(100vh);
+  }
+}
+
+/* Container query fallback for browsers without cqw support */
+@supports not (width: 1cqw) {
+  @keyframes movingBall {
+    0% {
+      transform: translateY(-100vh);
+    }
+    25% {
+      transform: translateY(0);
+    }
+    30% {
+      transform: translateY(-8px);
+    }
+    35% {
+      transform: translateY(0);
+    }
+    80% {
+      /* Fallback using viewport width, capped for larger screens */
+      transform: translateX(min(540px, calc(90vw - 32px))) translateY(0);
+    }
+    100% {
+      transform: translateX(min(540px, calc(90vw - 32px))) translateY(100vh);
+    }
   }
 }
 
