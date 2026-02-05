@@ -1,13 +1,14 @@
 import { Cell } from './CellModel.js';
 
 export class MazeModel {
-  constructor(size, rows, cols) {
+  constructor(size, rows, cols, seed = Date.now()) {
     this.size = size;
     this.rows = rows;
     this.cols = cols;
     this.grid = [];
     this.stack = [];
     this.current = null;
+    this.random = this.mulberry32(seed);
   }
 
   setup() {
@@ -22,11 +23,21 @@ export class MazeModel {
     this.current = this.grid[0][0];
   }
 
+  // Simple seeded random number generator
+  mulberry32(a) {
+    return function() {
+      let t = a += 0x6D2B79F5;
+      t = Math.imul(t ^ t >>> 15, t | 1);
+      t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+
   // DFS Maze Generation Algorithm
   // Code adapted from https://zenith20.hashnode.dev/build-your-own-maze-generator-in-javascript
   generate() {
     this.current.visited = true;
-    const next = this.current.getRandNeighbour();
+    const next = this.current.getRandNeighbour(this.random);
 
     if (next) {
       next.visited = true;

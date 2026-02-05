@@ -56,7 +56,7 @@
 
     <script>
         // Check if the browser supports service workers
-        if ('serviceWorker' in navigator) {
+        if ('serviceWorker' in navigator && location.hostname !== 'localhost' && location.protocol === 'https:') {
             navigator.serviceWorker.register('/service-worker.js')
                 .then(() => console.log('Service Worker registered'))
                 .catch(err => console.error('SW registration failed', err));

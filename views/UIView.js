@@ -17,7 +17,7 @@ export class UIView {
   }
 
   showModal() {
-    this.modal.style.display = "block";
+    this.modal.style.display = "flex";
   }
 
   hideModal() {

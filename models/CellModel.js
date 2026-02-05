@@ -39,10 +39,10 @@ export class Cell {
     if (bottom && !bottom.visited) this.neighbours.push(bottom);
   }
 
-  getRandNeighbour() {
+  getRandNeighbour(random) {
     this.setNeighbours();
     if (this.neighbours.length === 0) return undefined;
-    const rand = Math.floor(Math.random() * this.neighbours.length);
+    const rand = Math.floor(random() * this.neighbours.length);
     return this.neighbours[rand];
   }
 
