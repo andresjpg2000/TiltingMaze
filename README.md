@@ -43,18 +43,27 @@ Reach the finish cell without falling into dead ends
 
 Planned improvements and features:
 
-  - Progressive Web App (PWA) support
+  - [x] Progressive Web App (PWA) support 
 
-  - Gyroscope support (mobile tilt controls)
+  - [x] Gyroscope support (mobile tilt controls) - check gyro branch, this is still an unfinished version
 
-  - Timer to measure completion time
+  - [x] Timer to measure completion time
 
-  - Leaderboard to compare best runs
+  - [ ] Leaderboard to compare best runs
 
-  - Backend service for storing scores and matches
+  - [ ] Backend service for storing scores and matches
 
-  - Simple multiplayer mode (1v1)
+  - [ ] Simple multiplayer mode (1v1)
 
 # Credits / Acknowledgements
 
 - Maze generation algorithm adapted from [Zenith20’s tutorial](https://zenith20.hashnode.dev/build-your-own-maze-generator-in-javascript).
+
+# License
+
+This project is licensed under the **Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)** license.
+
+You are free to use, modify, and share this project **for non-commercial purposes only**, as long as proper credit is given.
+
+Commercial use is **not permitted** without explicit permission from the author.
+
