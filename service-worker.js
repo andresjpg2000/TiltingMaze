@@ -1,6 +1,6 @@
 const CACHE_NAME = 'static-v1';
 const urlsToCache = [
-  '/pages/Menu.html',
+  '/index.html',
   '/pages/Maze.html',
   '/pages/offline.html',
   '/styles/global.css',

@@ -1,7 +1,7 @@
 {
   "name": "Tilting Maze Game",
   "short_name": "Tilting Maze",
-  "start_url": "/pages/Menu.html",
+  "start_url": "index.html",
   "display": "standalone",
   "background_color": "#2ec4b6",
   "theme_color": "#FF3366",
