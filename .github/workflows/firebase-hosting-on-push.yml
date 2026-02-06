@@ -1,0 +1,25 @@
+# .github/workflows/firebase-hosting-deploy.yml
+name: Deploy to Firebase Hosting
+
+# Run this workflow on pushes to main branch
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # Step 1: Checkout the repository
+      - uses: actions/checkout@v4
+
+      # Step 2: Deploy to Firebase Hosting
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_TILTED_MAZE_GAME }}
+          projectId: tilted-maze-game
